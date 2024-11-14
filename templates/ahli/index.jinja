@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ahli</title>
+  </head>
+  <body>
+    <h1>Data Ahli</h1>
+    <a href="/">kriteria</a>
+
+    <table border="1">
+      <thead>
+        <tr>
+          {% for col in headers %}
+            <th>{{ col }}</th>
+          {% endfor %}
+        </tr>
+      </thead>
+      <tbody>
+        {% if data %}
+          {% for row in data %}
+            <tr>
+              {% for value in row.values() %}
+                <td>{{ value }}</td>
+              {% endfor %}
+            </tr>
+          {% endfor %}
+        {% else %}
+          <tr>
+            <td colspan="{{ headers|length }}">No data available.</td>
+          </tr>
+        {% endif %}
+      </tbody>
+    </table>
+  </body>
+</html>

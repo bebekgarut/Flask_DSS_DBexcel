@@ -3,26 +3,30 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" />
     <title>Document</title>
   </head>
   <body>
-    <a href="/tambah">tambah</a>
-    <table border="1">
-      <tr>
-        <th>No</th>
-        <th>Kriteria</th>
-        <th>aksi</th>
-      </tr>
-      {% for row in data %}
+    <div class="">
+      <a href="/ahli">ahli</a>
+      <a href="/tambah">tambah</a>
+      <table class="text-center">
         <tr>
-          <td>{{ loop.index0 + 1 }}</td>
-          <td>{{ row.kriteria }}</td>
-          <td>
-            <a href=" {{ url_for('edit', id=loop.index0) }} ">edit</a>
-            <a href="{{ url_for('hapus', id=loop.index0) }}">hapus</a>
-          </td>
+          <th class="wo">No</th>
+          <th>Kriteria</th>
+          <th>aksi</th>
         </tr>
-      {% endfor %}
-    </table>
+        {% for row in data %}
+          <tr>
+            <td>{{ loop.index0 + 1 }}</td>
+            <td>{{ row.kriteria }}</td>
+            <td>
+              <a href=" {{ url_for('edit', id=loop.index0) }} ">edit</a>
+              <a href="{{ url_for('hapus', id=loop.index0) }}">hapus</a>
+            </td>
+          </tr>
+        {% endfor %}
+      </table>
+    </div>
   </body>
 </html>
