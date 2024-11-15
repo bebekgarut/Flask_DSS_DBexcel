@@ -8,6 +8,7 @@
   <body>
     <h1>Data Ahli</h1>
     <a href="/">kriteria</a>
+    <a href="/ahli/tambah">tambah ahli</a>
 
     <table border="1">
       <thead>
@@ -15,6 +16,7 @@
           {% for col in headers %}
             <th>{{ col }}</th>
           {% endfor %}
+          <th>aksi</th>
         </tr>
       </thead>
       <tbody>
@@ -24,11 +26,15 @@
               {% for value in row.values() %}
                 <td>{{ value }}</td>
               {% endfor %}
+              <td>
+                <a href="/ahli/edit/{{ row.kode_ahli }}">Edit</a> |
+                <a href="/ahli/hapus/{{ row.kode_ahli }}">Hapus</a>
+              </td>
             </tr>
           {% endfor %}
         {% else %}
           <tr>
-            <td colspan="{{ headers|length }}">No data available.</td>
+            <td colspan="{{ headers|length + 1 }}">No data available.</td>
           </tr>
         {% endif %}
       </tbody>

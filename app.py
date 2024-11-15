@@ -16,6 +16,16 @@ def read_ahli():
 
 def save_ahli(df):
     df.to_excel(db_ahli, index=False)
+    
+def generate_kode_ahli(df):
+    if df.empty:
+        return "P1"
+    
+    last_code = df["kode_ahli"].iloc[-1]
+    last_number = int(last_code[1:])
+    new_number = last_number + 1
+    
+    return f"P{new_number}"
 
 @app.route("/")
 def index():
@@ -68,6 +78,7 @@ def ahli():
         ahli_df[col]= 0
     
     remove_columns = ahli_columns - kriteria_to_ahli
+    remove_columns = remove_columns - {'kode_ahli'}
     ahli_df.drop(columns=remove_columns, inplace=True)
     
     save_ahli(ahli_df)
@@ -77,6 +88,44 @@ def ahli():
     headers = ahli_df.columns.tolist()
     
     return render_template("ahli/index.jinja", data=data, headers=headers)
+
+@app.route("/ahli/tambah", methods=['GET', 'POST'])
+def tambah_ahli():
+    ahli_df = read_ahli()
+    headers = ahli_df.columns.tolist()
+    
+    if request.method == "POST":
+        new_row = {col : request.form.get(col) for col in headers if col != 'kode_ahli'}
+        
+        new_row['kode_ahli'] =generate_kode_ahli(ahli_df)
+        
+        ahli_df = ahli_df._append(new_row, ignore_index=True)
+        
+        save_ahli(ahli_df)
+        
+        return redirect(url_for('ahli'))
+        
+    return render_template("ahli/tambah.jinja", headers=headers)
+
+@app.route("/ahli/edit/<string:kode_ahli>", methods=['GET' , 'POST'])
+def edit_ahli(kode_ahli):
+    ahli_df = read_ahli()
+    ahli_data = ahli_df[ahli_df['kode_ahli']==kode_ahli].iloc[0]
+    headers = ahli_df.columns.tolist()
+    
+    if request.method == "POST":
+        for col in headers:
+            if col != 'kode_ahli':
+                ahli_df.at[id, col] = request.form.get(col)
+        save_ahli(ahli_df)
+        
+        return redirect(url_for('ahli'))
+    
+    return render_template("ahli/edit.jinja", data=ahli_data, headers=headers)
+
+@app.route("/ahli/hapus/<string:kode_ahli>")
+def hapus_ahli(kode_ahli):
+    return
 
 if __name__ == '__main__':
     app.run(port=5000, debug=True)
