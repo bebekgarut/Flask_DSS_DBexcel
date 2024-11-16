@@ -116,7 +116,7 @@ def edit_ahli(kode_ahli):
     if request.method == "POST":
         for col in headers:
             if col != 'kode_ahli':
-                ahli_df.at[id, col] = request.form.get(col)
+                ahli_df.loc[ahli_df['kode_ahli'] == kode_ahli, col] = request.form.get(col)
         save_ahli(ahli_df)
         
         return redirect(url_for('ahli'))
@@ -125,7 +125,11 @@ def edit_ahli(kode_ahli):
 
 @app.route("/ahli/hapus/<string:kode_ahli>")
 def hapus_ahli(kode_ahli):
-    return
+    ahli_df = read_ahli()
+    drop_ahli = ahli_df[ahli_df['kode_ahli'] == kode_ahli].index
+    ahli_df.drop(drop_ahli, inplace=True)
+    save_ahli(ahli_df)
+    return redirect(url_for('ahli'))
 
 if __name__ == '__main__':
     app.run(port=5000, debug=True)

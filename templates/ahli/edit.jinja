@@ -11,7 +11,7 @@
       {% for col in headers %}
         {% if col != 'kode_ahli' %}
           <label for="{{ col }}">{{ col }}</label>
-          <input type="number" name="{{ col }}" value="{{ data.col }}" />
+          <input type="number" name="{{ col }}" value="{{ data.get(col) }}" />
         {% endif %}
       {% endfor %}
       <button type="submit">update</button>
