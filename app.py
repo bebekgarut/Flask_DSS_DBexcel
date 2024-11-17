@@ -4,6 +4,7 @@ import pandas as pd
 app = Flask(__name__)
 db_kriteria = "database/tb_kriteria.xlsx"
 db_ahli = "database/tb_ahli.xlsx"
+db_swara = "database/tb_swara.xlsx"
 
 def read_kriteria():
     return pd.read_excel(db_kriteria)
@@ -26,6 +27,12 @@ def generate_kode_ahli(df):
     new_number = last_number + 1
     
     return f"P{new_number}"
+
+def read_swara():
+    return pd.read_excel(db_swara)
+
+def save_swara(df):
+    df.to_excel(db_swara, index=False)
 
 @app.route("/")
 def index():
@@ -130,6 +137,32 @@ def hapus_ahli(kode_ahli):
     ahli_df.drop(drop_ahli, inplace=True)
     save_ahli(ahli_df)
     return redirect(url_for('ahli'))
+
+@app.route("/swara")
+def swara():
+    kriteria_df = read_kriteria()
+    swara_df = read_swara()
+    
+    kriteria_data = kriteria_df.iloc[:, 0].tolist()
+    swara_data = swara_df.iloc[:, 0].tolist()
+    
+    data_kriteria = set(kriteria_data)
+    data_swara = set(swara_data)
+    
+    tambah_data = data_kriteria - data_swara
+    for row in tambah_data:
+       swara_df = swara_df._append({'kriteria': row}, ignore_index=True)
+        
+    hapus_data = data_swara - data_kriteria
+    swara_df = swara_df[~swara_df['kriteria'].isin(hapus_data)]
+    
+    save_swara(swara_df)
+    
+    swara_df = read_swara()
+    
+    data = swara_df.to_dict(orient="records")
+    
+    return render_template("swara/index.jinja", data=data)
 
 if __name__ == '__main__':
     app.run(port=5000, debug=True)
