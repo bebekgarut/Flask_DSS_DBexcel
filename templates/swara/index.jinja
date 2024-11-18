@@ -13,11 +13,21 @@
       <tr>
         <th>no</th>
         <th>kriteria</th>
+        <th>tj</th>
+        <th>j</th>
+        <th>Sj</th>
+        <th>Kj</th>
+        <th>Qj</th>
       </tr>
       {% for row in data %}
         <tr>
           <td>{{ loop.index0 + 1 }}</td>
           <td>{{ row.kriteria }}</td>
+          <td>{{ row.tj }}</td>
+          <td>{{ row.j }}</td>
+          <td>{{ row.Sj }}</td>
+          <td>{{ row.Kj }}</td>
+          <td>{{ row.Qj }}</td>
         </tr>
       {% endfor %}
     </table>

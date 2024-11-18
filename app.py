@@ -142,6 +142,7 @@ def hapus_ahli(kode_ahli):
 def swara():
     kriteria_df = read_kriteria()
     swara_df = read_swara()
+    ahli_df = read_ahli()
     
     kriteria_data = kriteria_df.iloc[:, 0].tolist()
     swara_data = swara_df.iloc[:, 0].tolist()
@@ -156,13 +157,36 @@ def swara():
     hapus_data = data_swara - data_kriteria
     swara_df = swara_df[~swara_df['kriteria'].isin(hapus_data)]
     
+    
+    for idx, row in swara_df.iterrows():
+        kriteria_name = row['kriteria']
+        if kriteria_name in ahli_df.columns:
+            rata_rata = ahli_df[kriteria_name].mean()
+            swara_df.at[idx, 'tj'] = rata_rata
+            
+    swara_df['j'] = swara_df['tj'].rank(ascending=False, method='dense').astype(int)
+    
+    average_j = swara_df['j'].mean()
+    
+    if (swara_df['j'] == 1).all():
+        swara_df['Sj'] = 0
+    else:
+        swara_df['Sj'] = (swara_df['j'] - 1)/ average_j
+        
+    if(swara_df['j'] == 1).all():
+        swara_df['Kj'] = 1
+    else:
+        swara_df['Kj'] = swara_df['Sj'] + 1
+    
     save_swara(swara_df)
     
     swara_df = read_swara()
     
+    swara_df = swara_df.sort_values(by='j', ascending=True)
+    
     data = swara_df.to_dict(orient="records")
     
-    return render_template("swara/index.jinja", data=data)
+    return render_template("swara/index.jinja", data=data, average_j=average_j)
 
 if __name__ == '__main__':
     app.run(port=5000, debug=True)
