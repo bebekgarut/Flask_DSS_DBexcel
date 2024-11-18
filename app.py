@@ -38,7 +38,7 @@ def save_swara(df):
 def index():
     df = read_kriteria()
     data = df.to_dict(orient="records")
-    return render_template("index.jinja", data=data)
+    return render_template("kriteria/index.jinja", data=data)
 
 @app.route("/tambah", methods=['GET', 'POST'])
 def tambah():
@@ -166,23 +166,27 @@ def swara():
             
     swara_df['j'] = swara_df['tj'].rank(ascending=False, method='dense').astype(int)
     
+    swara_df = swara_df.sort_values(by='j').reset_index(drop=True)
+    
     average_j = swara_df['j'].mean()
     
-    if (swara_df['j'] == 1).all():
-        swara_df['Sj'] = 0
-    else:
-        swara_df['Sj'] = (swara_df['j'] - 1)/ average_j
-        
-    if(swara_df['j'] == 1).all():
-        swara_df['Kj'] = 1
-    else:
-        swara_df['Kj'] = swara_df['Sj'] + 1
+    for i in range(len(swara_df)):
+        if i == 0:
+            swara_df.at[i, 'Sj'] = 0
+            swara_df.at[i, 'Kj'] = 1
+            swara_df.at[i, 'Qj'] = 1
+        else:
+            swara_df.at[i, 'Sj'] = (swara_df.at[i, 'j'] - 1) / average_j
+            swara_df.at[i, 'Kj'] = swara_df.at[i, 'Sj'] + 1
+            swara_df.at[i, 'Qj'] = swara_df.at[i - 1, 'Qj'] / swara_df.at[i, 'Kj']
+            
+    total_qj = swara_df['Qj'].sum()
+    
+    swara_df['Wj'] = swara_df['Qj'] / total_qj
     
     save_swara(swara_df)
     
     swara_df = read_swara()
-    
-    swara_df = swara_df.sort_values(by='j', ascending=True)
     
     data = swara_df.to_dict(orient="records")
     
