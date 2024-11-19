@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Alternatif</title>
+  </head>
+  <body>
+    <h1>Data Alternatif</h1>
+    <a href="/">kriteria</a>
+    <a href="/swara">swara</a>
+    <a href="/alternatif/tambah">tambah alternatif</a>
+
+    <table border="1">
+      <thead>
+        <tr>
+          {% for col in headers %}
+            <th>{{ col }}</th>
+          {% endfor %}
+          <th>aksi</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% if data %}
+          {% for row in data %}
+            <tr>
+              {% for value in row.values() %}
+                <td>{{ value }}</td>
+              {% endfor %}
+              <td>
+                <a href="/alternatif/edit/{{ row.kode_alternatif }}">Edit</a> |
+                <a href="/alternatif/hapus/{{ row.kode_alternatif }}">Hapus</a>
+              </td>
+            </tr>
+          {% endfor %}
+        {% else %}
+          <tr>
+            <td colspan="{{ headers|length + 1 }}">No data available.</td>
+          </tr>
+        {% endif %}
+      </tbody>
+    </table>
+  </body>
+</html>

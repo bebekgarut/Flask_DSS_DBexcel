@@ -11,16 +11,20 @@
       <a href="/ahli">ahli</a>
       <a href="/swara">swara</a>
       <a href="/tambah">tambah</a>
+      <a href="/bobot">bobot</a>
+      <a href="/alternatif">alternatif</a>
       <table class="text-center">
         <tr>
           <th class="">No</th>
           <th>Kriteria</th>
+          <th>Jenis Kriteria</th>
           <th>aksi</th>
         </tr>
         {% for row in data %}
           <tr>
             <td>{{ loop.index0 + 1 }}</td>
             <td>{{ row.kriteria }}</td>
+            <td>{{ row.jenis_kriteria }}</td>
             <td>
               <a href=" {{ url_for('edit', id=loop.index0) }} ">edit</a>
               <a href="{{ url_for('hapus', id=loop.index0) }}">hapus</a>

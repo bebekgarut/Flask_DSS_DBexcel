@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" />
+    <title>Bobot</title>
+  </head>
+  <body>
+    <h1>Data Bobot</h1>
+    <a href="/">kriteria</a>
+    <a href="/ahli">ahli</a>
+    <a href="/swara">swara</a>
+    <a href="/tambah">tambah</a>
+
+    <table>
+      <tr>
+        <th>no</th>
+        <th>kriteria</th>
+        <th>bobot</th>
+      </tr>
+      {% for row in data %}
+        <tr>
+          <td>{{ loop.index0 + 1 }}</td>
+          <td>{{ row.kriteria }}</td>
+          <td>{{ row.Wj }}</td>
+        </tr>
+      {% endfor %}
+    </table>
+  </body>
+</html>
