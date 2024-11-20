@@ -4,34 +4,69 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css" />
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Sour+Gummy:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Lilita+One&display=swap" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.0/css/all.min.css" rel="stylesheet" />
+
     <title>Document</title>
   </head>
   <body>
-    <div class="">
-      <a href="/ahli">ahli</a>
-      <a href="/swara">swara</a>
-      <a href="/tambah">tambah</a>
-      <a href="/bobot">bobot</a>
-      <a href="/alternatif">alternatif</a>
-      <table class="text-center">
-        <tr>
-          <th class="">No</th>
-          <th>Kriteria</th>
-          <th>Jenis Kriteria</th>
-          <th>aksi</th>
-        </tr>
-        {% for row in data %}
-          <tr>
-            <td>{{ loop.index0 + 1 }}</td>
-            <td>{{ row.kriteria }}</td>
-            <td>{{ row.jenis_kriteria }}</td>
-            <td>
-              <a href=" {{ url_for('edit', id=loop.index0) }} ">edit</a>
-              <a href="{{ url_for('hapus', id=loop.index0) }}">hapus</a>
-            </td>
-          </tr>
-        {% endfor %}
-      </table>
+    <div class="flex flex-row h-screen">
+      <div class="flex flex-col bg-Abu585D61 p-5 w-1/4 space-y-4 font-semibold text-white font-roboto">
+        <div class="font-sour font-bold w-fit bg-Biru63D1F6 p-3 rounded-tl-3xl rounded-ee-3xl shadow-md mb-3">
+          <p>SWARA & SAW</p>
+        </div>
+        <a href=""><i class="fas fa-home text-Biru63D1F6 text-xl mr-4"></i>Dashboard</a>
+        <a href="/"><i class="fa-solid fa-chart-simple text-Biru63D1F6 text-xl mr-5"></i>Tabel Kriteria</a>
+        <a href="/ahli"><i class="fa-solid fa-star text-Biru63D1F6 text-xl mr-4"></i>Tabel Ahli</a>
+        <a href="/swara"><i class="fa-solid fa-calculator text-Biru63D1F6 text-xl ml-1 mr-5"></i>Perhitungan Swara</a>
+        <a href="/bobot"><i class="fa-solid fa-scale-balanced text-Biru63D1F6 text-xl mr-4"></i>Tabel Bobot</a>
+        <a href="/alternatif"><i class="fa-solid fa-signal text-Biru63D1F6 text-xl mr-4"></i>Tabel Alternatif</a>
+        <a href="/saw"><i class="fa-solid fa-ranking-star text-Biru63D1F6 text-xl mr-4"></i>Perhitungan SAW</a>
+        <a href="/user"><i class="fa-solid fa-users text-Biru63D1F6 text-xl mr-4"></i>Tabel User</a>
+        <a href=""><i class="fa-solid fa-right-from-bracket text-Biru63D1F6 text-xl mr-5"></i>Logout</a>
+      </div>
+      <div class="w-full p-5 bg-PutihFCF6F5">
+        <a href="/tambah">tambah</a>
+        <table class="text-center" id="table">
+          <thead>
+            <tr>
+              <th>No</th>
+              <th>Kriteria</th>
+              <th>Jenis Kriteria</th>
+              <th>aksi</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in data %}
+              <tr>
+                <td>{{ loop.index0 + 1 }}</td>
+                <td>{{ row.kriteria }}</td>
+                <td>{{ row.jenis_kriteria }}</td>
+                <td>
+                  <a href=" {{ url_for('edit', id=loop.index0) }} ">edit</a>
+                  <a href="{{ url_for('hapus', id=loop.index0) }}">hapus</a>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
     </div>
+    <script>
+      $(document).ready(function () {
+        $('#table').DataTable({
+          paging: true,
+          searching: true,
+          ordering: true,
+          info: true
+        })
+      })
+    </script>
   </body>
 </html>

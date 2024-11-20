@@ -3,17 +3,58 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SAW</title>
+    <title>SAW Results</title>
   </head>
   <body>
-    <h1>Data SAW</h1>
-    <table>
-      <tr>
-        <th>No</th>
-      </tr>
-      <tr>
-        <td>1</td>
-      </tr>
+    <h1>Data Alternatif</h1>
+    <a href="/">Kriteria</a>
+    <a href="/swara">Swara</a>
+    <a href="/alternatif">Alternatif</a>
+
+    <h2>Table R (Normalisasi)</h2>
+    <table border="1">
+      <thead>
+        <tr>
+          <th>Kode Alternatif</th>
+          {% for col in headers_r %}
+            <th>{{ col }}</th>
+          {% endfor %}
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in data %}
+          <tr>
+            <td>{{ row.kode_alternatif }}</td>
+            {% for col in headers_r %}
+              <td>{{ row.get(col) }}</td>
+            {% endfor %}
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <h2>Table V (Preferensi)</h2>
+    <table border="1">
+      <thead>
+        <tr>
+          <th>Kode Alternatif</th>
+          {% for col in headers_v %}
+            <th>{{ col }}</th>
+          {% endfor %}
+          <th>Skor SAW</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in data %}
+          <tr>
+            <td>{{ row.kode_alternatif }}</td>
+            {% for col in headers_v %}
+              <td>{{ row.get(col) }}</td>
+            {% endfor %}
+            <td>{{ row.Skor_SAW }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
     </table>
   </body>
 </html>

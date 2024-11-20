@@ -6,6 +6,7 @@ db_kriteria = "database/tb_kriteria.xlsx"
 db_ahli = "database/tb_ahli.xlsx"
 db_swara = "database/tb_swara.xlsx"
 db_alternatif = "database/tb_alternatif.xlsx"
+db_saw = "database/tb_saw.xlsx"
 
 def read_kriteria():
     return pd.read_excel(db_kriteria)
@@ -50,6 +51,12 @@ def generate_kode_alternatif(df):
     new_number = last_number + 1
     
     return f"A{new_number}"
+
+def read_saw():
+    return pd.read_excel(db_saw)
+
+def save_saw(df):
+    df.to_excel(db_saw, index=False)
 
 @app.route("/")
 def index():
@@ -238,9 +245,9 @@ def alternatif():
     
     save_alternatif(alternatif_df)
     
-    alternatif__df = read_alternatif()
-    data = alternatif__df.to_dict(orient="records")
-    headers = alternatif__df.columns.tolist()
+    alternatif_df = read_alternatif()
+    data = alternatif_df.to_dict(orient="records")
+    headers = alternatif_df.columns.tolist()
     
     return render_template("alternatif/index.jinja", data=data, headers=headers)
 
@@ -286,6 +293,42 @@ def hapus_alternatif(kode_alternatif):
     save_alternatif(alternatif_df)
     return redirect(url_for('alternatif'))
 
+@app.route("/saw")
+def saw():
+    kriteria_df = read_kriteria()
+    swara_df = read_swara()
+    alternatif_df = read_alternatif()
+    saw_df = read_saw()
+    
+    saw_df = alternatif_df.drop(columns=["alternatif"]).copy()
+    saw_df = saw_df.rename(columns={col: col + "(R)" for col in saw_df.columns if col != "kode_alternatif"})
+    
+    for kriteria in kriteria_df["kriteria"]:
+        col_name = kriteria + "(R)"
+        if kriteria_df[kriteria_df["kriteria"] == kriteria]["jenis_kriteria"].values[0] == "benefit":
+            saw_df[col_name] = saw_df[col_name] / saw_df[col_name].max()
+        else:
+            saw_df[col_name] = saw_df[col_name].min() / saw_df[col_name]
+            
+    for kriteria in kriteria_df["kriteria"]:
+        col_name_r = kriteria + "(R)"
+        col_name_v = kriteria + "(V)"
+        bobot = swara_df[swara_df["kriteria"] == kriteria]["Wj"].values[0]
+        saw_df[col_name_v] = saw_df[col_name_r] * bobot
+    
+    saw_df["Skor_SAW"] = saw_df[[col + "(V)" for col in kriteria_df["kriteria"]]].sum(axis=1)
+    
+    headers_r = [col for col in saw_df.columns if "(R)" in col]
+    headers_v = [col for col in saw_df.columns if "(V)" in col]
+    headers_all = saw_df.columns.tolist()
+        
+    save_saw(saw_df)
+    data = saw_df.to_dict(orient="records")
+    
+    headers = saw_df.columns.tolist()
+    
+    return render_template("saw/index.jinja", data=data, headers_r=headers_r, headers_v=headers_v, headers_all=headers_all)
+    
 
 if __name__ == '__main__':
     app.run(port=5000, debug=True)
