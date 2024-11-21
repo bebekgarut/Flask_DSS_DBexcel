@@ -15,7 +15,8 @@ module.exports = {
       fontFamily: {
         roboto: ['Roboto', 'sans-serif'], 
         sour:['Sour Gummy'],
-        archivo:['Archivo Black']
+        archivo:['Archivo Black'],
+        ubuntu:['Ubuntu']
       },
     },
   },
