@@ -4,13 +4,26 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Tambah</title>
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" />
   </head>
   <body>
-    <h2>tambah kriteria</h2>
-    <form method="POST">
-      <label for="">kriteria</label><input type="text" name="kriteria" />
-      <label for="">Jenis Kriteria</label><input type="text" name="jenis_kriteria" />
-      <button type="submit">tambah</button>
-    </form>
+    <div class="flex flex-col bg-PutihFCF6F5 items-center border border-1 border-Abu585D61 p-10">
+      <p class="text-xl font-bold mb-4">Tambah Data kriteria</p>
+      <form method="POST">
+        <div class="flex flex-col">
+          <div class="flex flex-col mb-3">
+            <label for="kriteria" class="mb-1 ml-2">Kriteria</label><input type="text" name="kriteria" class="border-2 border-Biru63D1F6 rounded-2xl px-2 py-1" />
+          </div>
+          <div class="flex flex-col mb-5">
+            <label for="jenis_kriteria" class="mb-1 ml-2">Jenis Kriteria</label>
+            <select name="jenis_kriteria" id="" class="border-2 border-Biru63D1F6 rounded-2xl px-2 py-1 mb-3">
+              <option value="benefit">Benefit</option>
+              <option value="cost">Cost</option>
+            </select>
+          </div>
+          <button type="submit" class="px-4 py-2 rounded-xl bg-Biru63D1F6 text-PutihFCF6F5 font-bold">Tambah</button>
+        </div>
+      </form>
+    </div>
   </body>
 </html>

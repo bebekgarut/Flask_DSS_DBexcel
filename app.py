@@ -58,7 +58,7 @@ def read_saw():
 def save_saw(df):
     df.to_excel(db_saw, index=False)
 
-@app.route("/")
+@app.route("/kriteria")
 def index():
     df = read_kriteria()
     data = df.to_dict(orient="records")
@@ -328,6 +328,11 @@ def saw():
     headers = saw_df.columns.tolist()
     
     return render_template("saw/index.jinja", data=data, headers_r=headers_r, headers_v=headers_v, headers_all=headers_all)
+
+@app.route("/", methods=['GET', 'POST'])
+def login():
+    
+    return render_template("login/login.jinja")
     
 
 if __name__ == '__main__':
