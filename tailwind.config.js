@@ -16,7 +16,8 @@ module.exports = {
         roboto: ['Roboto', 'sans-serif'], 
         sour:['Sour Gummy'],
         archivo:['Archivo Black'],
-        ubuntu:['Ubuntu']
+        ubuntu:['Ubuntu'],
+        bebas:['Bebas Neue']
       },
     },
   },

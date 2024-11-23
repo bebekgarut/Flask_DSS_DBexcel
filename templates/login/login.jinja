@@ -4,17 +4,43 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.0/css/all.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Sour+Gummy:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Bebas+Neue&family=Sour+Gummy:ital,wght@0,100..900;1,100..900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Sour+Gummy:ital,wght@0,100..900;1,100..900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet" />
     <title>Login</title>
   </head>
   <body>
-    <div class="w-full flex flex-row p-20">
-      <div class="w-1/2">
-        <div class="aspect-square p-20">
-          <img src="{{ url_for('static', filename='img/login.png') }}" class="" alt="" />
+    <div class="flex flex-row h-screen">
+      <div class="w-1/2 bg-PutihFCF6F5">
+        <div class="flex flex-row items-center space-x-4 mt-10 ml-20 mb-10 font-bebas text-xl w-fit p-3">
+          <img src="{{ url_for('static', filename='img/operator.png') }}" class="w-8" alt="" />
+          <p class="tracking-widest">SWARA & SAW</p>
+        </div>
+        <div class="flex justify-center items-center flex-col">
+          <img src="{{ url_for('static', filename='img/login.png') }}" class="w-7/12 h-full object-contain" alt="" />
+          <div class="font-sour font-bold w-fit bg-PutihFCF6F5 text-KuningDEAF4B rounded-tl-3xl rounded-ee-3xl shadow-2xl shadow-Biru63D1F6 italic">
+            <p>Rekomendasi Operator di Gang Buntu</p>
+            <hr class="text-Biru63D1F6 bg-Biru63D1F6" />
+          </div>
         </div>
       </div>
-      <div class="bg-Biru63D1F6 w-1/2 justify-center">
-        <input type="text" name="" id="" />
+      <div class="bg-Biru63D1F6 w-1/2 flex items-center justify-center shadow-black shadow-2xl">
+        <form action="" method="post">
+          <div class="flex flex-col">
+            <p class="text-PutihFCF6F5 font-ubuntu font-bold text-3xl mb-6">Sign in to your account</p>
+            <div class="relative mb-6">
+              <input type="text" class="w-full rounded-full h-12 pl-10 pr-4 border-2 border-KuningDEAF4B" placeholder="Username" />
+              <i class="fa-solid fa-user absolute left-0 top-0 text-Abu585D61 1 p-4 rounded-full"></i>
+            </div>
+            <div class="relative mb-6">
+              <input type="text" class="w-full rounded-full h-12 pl-10 pr-4 border-2 border-KuningDEAF4B" placeholder="Password" />
+              <i class="fa-solid fa-lock absolute left-0 top-0 text-Abu585D61 1 p-4 rounded-full"></i>
+            </div>
+            <button class="bg-KuningDEAF4B py-1 rounded-full border-2 border-Abu585D61 font-ubuntu text-PutihFCF6F5 font-bold text-lg mb-1">Login</button>
+            <a href="" class="py-1 text-sm underline">Belum Punya Akun? Register disini...</a>
+          </div>
+        </form>
       </div>
     </div>
   </body>
