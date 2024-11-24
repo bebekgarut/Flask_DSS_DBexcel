@@ -13,31 +13,49 @@
     <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Lilita+One&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Sour+Gummy:ital,wght@0,100..900;1,100..900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.0/css/all.min.css" rel="stylesheet" />
-
+    <style>
+      .sidebar-collapsed {
+        width: 4rem !important;
+      }
+      
+      .sidebar-collapsed .menu-text {
+        display: none;
+      }
+      
+      .sidebar-collapsed #logoContainer {
+        font-size: small;
+        padding-left: 7px;
+      }
+      
+      .icon-rotate {
+        transform: rotate(180deg);
+      }
+    </style>
     <title>Kriteria</title>
   </head>
   <body>
-    <div class="flex flex-row h-screen">
-      <div class="flex flex-col bg-Abu585D61 p-5 w-1/4 space-y-4 font-semibold text-white font-roboto">
-        <div class="font-sour font-bold w-fit bg-Biru63D1F6 p-3 rounded-tl-3xl rounded-ee-3xl shadow-md mb-3">
-          <p>SWARA & SAW</p>
+    <div class="flex">
+      <div id="sidebar" class="flex flex-col h-screen space-y-4 font-semibold text-white font-roboto bg-Abu585D61 p-5 pt-8 w-1/4 duration-300 relative">
+        <button id="toggleBtn" class="bg-PutihFCF6F5 text-Abu585D61 text-lg rounded-full absolute right-4 top-2 border border-Abu585D61 cursor-pointer p-1 duration-300"><i class="fas fa-arrow-left" id="toggleIcon"></i></button>
+        <div id="logoContainer" class="font-sour font-bold w-fit bg-Biru63D1F6 p-3 rounded-tl-3xl rounded-ee-3xl shadow-md mb-3 duration-300">
+          <p class="duration-300">SWARA & SAW</p>
         </div>
-        <a href=""><i class="fas fa-home text-Biru63D1F6 text-xl mr-4"></i>Dashboard</a>
-        <a href="/"><i class="fa-solid fa-chart-simple text-Biru63D1F6 text-xl mr-5"></i>Tabel Kriteria</a>
-        <a href="/ahli"><i class="fa-solid fa-star text-Biru63D1F6 text-xl mr-4"></i>Tabel Ahli</a>
-        <a href="/swara"><i class="fa-solid fa-calculator text-Biru63D1F6 text-xl ml-1 mr-5"></i>Perhitungan Swara</a>
-        <a href="/bobot"><i class="fa-solid fa-scale-balanced text-Biru63D1F6 text-xl mr-4"></i>Tabel Bobot</a>
-        <a href="/alternatif"><i class="fa-solid fa-signal text-Biru63D1F6 text-xl mr-4"></i>Tabel Alternatif</a>
-        <a href="/saw"><i class="fa-solid fa-ranking-star text-Biru63D1F6 text-xl mr-4"></i>Perhitungan SAW</a>
-        <a href="/user"><i class="fa-solid fa-users text-Biru63D1F6 text-xl mr-4"></i>Tabel User</a>
-        <a href="/logout"><i class="fa-solid fa-right-from-bracket text-Biru63D1F6 text-xl mr-5"></i>Logout</a>
+        <a href=""><i class="fas fa-home text-Biru63D1F6 text-xl mr-4"></i><span class="menu-text">Dashboard</span></a>
+        <a href="/"><i class="fa-solid fa-chart-simple text-Biru63D1F6 text-xl mr-5"></i><span class="menu-text">Tabel Kriteria</span></a>
+        <a href="/ahli"><i class="fa-solid fa-star text-Biru63D1F6 text-xl mr-4"></i><span class="menu-text">Tabel Ahli</span></a>
+        <a href="/swara"><i class="fa-solid fa-calculator text-Biru63D1F6 text-xl ml-1 mr-5"></i><span class="menu-text">Perhitungan Swara</span></a>
+        <a href="/bobot"><i class="fa-solid fa-scale-balanced text-Biru63D1F6 text-xl mr-4"></i><span class="menu-text">Tabel Bobot</span></a>
+        <a href="/alternatif"><i class="fa-solid fa-signal text-Biru63D1F6 text-xl mr-4"></i><span class="menu-text">Tabel Alternatif</span></a>
+        <a href="/saw"><i class="fa-solid fa-ranking-star text-Biru63D1F6 text-xl mr-4"></i><span class="menu-text">Perhitungan SAW</span></a>
+        <a href="/user"><i class="fa-solid fa-users text-Biru63D1F6 text-xl mr-4"></i><span class="menu-text">Tabel User</span></a>
+        <a href="/logout"><i class="fa-solid fa-right-from-bracket text-Biru63D1F6 text-xl mr-5"></i><span class="menu-text">Logout</span></a>
       </div>
-      <div class="w-full p-5 bg-PutihFCF6F5">
+      <div id="mainContent" class="p-5 bg-PutihFCF6F5 w-full">
         <div class="flex justify-between mb-2">
           <p class="text-lg font-ubuntu font-semibold text-Biru63D1F6">Rekomendasi Operator di Gang Buntu</p>
           <div>
             <p>
-              <i class="fa-solid fa-user text-lg mr-1"></i> {{ username }}
+              <i class="fa-solid fa-user text-lg"></i> {{ username }}
             </p>
           </div>
         </div>
@@ -141,6 +159,25 @@
           searching: true,
           ordering: true,
           info: true
+        })
+      })
+    </script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        const sidebar = document.getElementById('sidebar')
+        const toggleBtn = document.getElementById('toggleBtn')
+        const toggleIcon = document.getElementById('toggleIcon')
+        const mainContent = document.getElementById('mainContent')
+      
+        toggleBtn.addEventListener('click', function () {
+          sidebar.classList.toggle('sidebar-collapsed')
+          toggleIcon.classList.toggle('icon-rotate')
+      
+          if (sidebar.classList.contains('sidebar-collapsed')) {
+            toggleBtn.style.transform = 'translateX(-0.1rem)'
+          } else {
+            toggleBtn.style.transform = 'translateX(0)'
+          }
         })
       })
     </script>
