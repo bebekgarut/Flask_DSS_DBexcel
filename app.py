@@ -1,12 +1,14 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, jsonify, session
 import pandas as pd
 
 app = Flask(__name__)
+app.secret_key = 'testing0909'
 db_kriteria = "database/tb_kriteria.xlsx"
 db_ahli = "database/tb_ahli.xlsx"
 db_swara = "database/tb_swara.xlsx"
 db_alternatif = "database/tb_alternatif.xlsx"
 db_saw = "database/tb_saw.xlsx"
+db_user = "database/tb_user.xlsx"
 
 def read_kriteria():
     return pd.read_excel(db_kriteria)
@@ -57,12 +59,19 @@ def read_saw():
 
 def save_saw(df):
     df.to_excel(db_saw, index=False)
+    
+def read_user():
+    return pd.read_excel(db_user)
+
+def save_user(df):
+    df.to_excel(db_user, index=False)
 
 @app.route("/kriteria")
 def index():
+    username = session.get('username')
     df = read_kriteria()
     data = df.to_dict(orient="records")
-    return render_template("kriteria/index.jinja", data=data)
+    return render_template("kriteria/index.jinja", username=username, data=data)
 
 @app.route("/tambah", methods=['GET', 'POST'])
 def tambah():
@@ -167,6 +176,7 @@ def hapus_ahli(kode_ahli):
 
 @app.route("/swara")
 def swara():
+    username = session.get('username')
     kriteria_df = read_kriteria()
     swara_df = read_swara()
     ahli_df = read_ahli()
@@ -331,9 +341,43 @@ def saw():
 
 @app.route("/", methods=['GET', 'POST'])
 def login():
-    
+    if request.method == 'POST':
+        username = request.form["username"].strip()
+        password = request.form['password'].strip()
+        
+        print("Username Input:", username)
+        print("Password Input:", password)
+        
+        df = read_user()
+        df['username'] = df['username'].astype(str).str.strip()
+        df['password'] = df['password'].astype(str).str.strip()
+        print("DataFrame:\n", df)
+        
+        validasi = ((df['username'] == username) & (df['password'] == password)).any()
+        print("Filtered User Data:\n", validasi)
+        
+        if validasi:
+            session['username'] = username
+            return jsonify(success=True)
+        else:
+            return jsonify(success=False, message="Username atau Password Salah")
+        
     return render_template("login/login.jinja")
-    
+
+@app.route("/register", methods=['POST'])
+def register():
+    email = request.form["email"]
+    username = request.form["username"]
+    password = request.form["password"]
+    df = read_user()
+    df = df._append({"email" : email, "username":username, "password":password}, ignore_index=True)
+    save_user(df)
+    return jsonify(success=True)
+
+@app.route("/logout")
+def logout():
+    session.pop('username', None)
+    return redirect(url_for('login'))
 
 if __name__ == '__main__':
     app.run(port=5000, debug=True)

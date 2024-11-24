@@ -9,9 +9,38 @@
     <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Bebas+Neue&family=Sour+Gummy:ital,wght@0,100..900;1,100..900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Sour+Gummy:ital,wght@0,100..900;1,100..900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet" />
     <title>Login</title>
+    <style>
+      .form-container {
+        display: none;
+      }
+      .active {
+        display: flex;
+      }
+    </style>
   </head>
   <body>
     <div class="flex flex-row h-screen">
+      <div class="bg-Biru63D1F6 w-1/2 flex items-center justify-center shadow-black shadow-2xl form-container" id="register-form">
+        <form action="/register" method="POST">
+          <div class="flex flex-col">
+            <p class="text-PutihFCF6F5 font-ubuntu font-bold text-3xl mb-6">Create New Account</p>
+            <div class="relative mb-6">
+              <input type="email" class="w-full rounded-full h-12 pl-10 pr-4 border-2 border-KuningDEAF4B" name="email" placeholder="Email" />
+              <i class="fa-solid fa-envelope absolute left-0 top-0 text-Abu585D61 1 p-4 rounded-full"></i>
+            </div>
+            <div class="relative mb-6">
+              <input type="text" class="w-full rounded-full h-12 pl-10 pr-4 border-2 border-KuningDEAF4B" name="username" placeholder="Username" />
+              <i class="fa-solid fa-user absolute left-0 top-0 text-Abu585D61 1 p-4 rounded-full"></i>
+            </div>
+            <div class="relative mb-6">
+              <input type="password" class="w-full rounded-full h-12 pl-10 pr-4 border-2 border-KuningDEAF4B" name="password" placeholder="Password" />
+              <i class="fa-solid fa-lock absolute left-0 top-0 text-Abu585D61 1 p-4 rounded-full"></i>
+            </div>
+            <button class="bg-KuningDEAF4B py-1 rounded-full border-2 border-Abu585D61 font-ubuntu text-PutihFCF6F5 font-bold text-lg mb-1" type="submit">Register</button>
+            <a href="" class="py-1 text-sm underline" onclick="showLoginForm()">Sudah Punya Akun? Login disini...</a>
+          </div>
+        </form>
+      </div>
       <div class="w-1/2 bg-PutihFCF6F5">
         <div class="flex flex-row items-center space-x-4 mt-10 ml-20 mb-10 font-bebas text-xl w-fit p-3">
           <img src="{{ url_for('static', filename='img/operator.png') }}" class="w-8" alt="" />
@@ -25,23 +54,92 @@
           </div>
         </div>
       </div>
-      <div class="bg-Biru63D1F6 w-1/2 flex items-center justify-center shadow-black shadow-2xl">
-        <form action="" method="post">
+      <div class="bg-Biru63D1F6 w-1/2 flex items-center justify-center shadow-black shadow-2xl form-container" id="login-form">
+        <form accept="/" method="POST" id="loginForm">
           <div class="flex flex-col">
             <p class="text-PutihFCF6F5 font-ubuntu font-bold text-3xl mb-6">Sign in to your account</p>
             <div class="relative mb-6">
-              <input type="text" class="w-full rounded-full h-12 pl-10 pr-4 border-2 border-KuningDEAF4B" placeholder="Username" />
+              <input type="text" class="w-full rounded-full h-12 pl-10 pr-4 border-2 border-KuningDEAF4B" name="username" placeholder="Username" />
               <i class="fa-solid fa-user absolute left-0 top-0 text-Abu585D61 1 p-4 rounded-full"></i>
             </div>
             <div class="relative mb-6">
-              <input type="text" class="w-full rounded-full h-12 pl-10 pr-4 border-2 border-KuningDEAF4B" placeholder="Password" />
+              <input type="password" class="w-full rounded-full h-12 pl-10 pr-4 border-2 border-KuningDEAF4B" name="password" placeholder="Password" />
               <i class="fa-solid fa-lock absolute left-0 top-0 text-Abu585D61 1 p-4 rounded-full"></i>
             </div>
-            <button class="bg-KuningDEAF4B py-1 rounded-full border-2 border-Abu585D61 font-ubuntu text-PutihFCF6F5 font-bold text-lg mb-1">Login</button>
-            <a href="" class="py-1 text-sm underline">Belum Punya Akun? Register disini...</a>
+            <button class="bg-KuningDEAF4B py-1 rounded-full border-2 border-Abu585D61 font-ubuntu text-PutihFCF6F5 font-bold text-lg mb-1" type="submit">Login</button>
+            <a href="" class="py-1 text-sm underline" onclick="showRegisterForm()">Belum Punya Akun? Register disini...</a>
           </div>
         </form>
       </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+      function showLoginForm() {
+        document.getElementById('login-form').classList.add('active')
+        document.getElementById('register-form').classList.remove('active')
+        localStorage.setItem('form', 'login')
+      }
+      
+      function showRegisterForm() {
+        document.getElementById('register-form').classList.add('active')
+        document.getElementById('login-form').classList.remove('active')
+        localStorage.setItem('form', 'register')
+      }
+      
+      document.addEventListener('DOMContentLoaded', function () {
+        const activeForm = localStorage.getItem('form')
+        if (activeForm === 'register') {
+          showRegisterForm()
+        } else {
+          showLoginForm()
+        }
+      })
+    </script>
+    <script>
+      document.querySelector('form[action="/register"]').onsubmit = async function (e) {
+        e.preventDefault()
+        const form = new FormData(this)
+      
+        const response = await fetch('/register', {
+          method: 'POST',
+          body: form
+        })
+      
+        const result = await response.json()
+        if (result.success) {
+          Swal.fire({
+            icon: 'success',
+            title: 'Registrasi Berhasil',
+            text: 'Akun Anda telah berhasil dibuat!'
+          }).then(() => {
+            window.location.href = '/'
+          })
+        }
+      }
+    </script>
+    <script>
+      document.getElementById('loginForm').onsubmit = async function (e) {
+        e.preventDefault()
+      
+        const formData = new FormData(this)
+      
+        const response = await fetch('/', {
+          method: 'POST',
+          body: formData
+        })
+      
+        const result = await response.json()
+      
+        if (result.success) {
+          window.location.href = '/kriteria'
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Login Gagal',
+            text: result.message
+          })
+        }
+      }
+    </script>
   </body>
 </html>

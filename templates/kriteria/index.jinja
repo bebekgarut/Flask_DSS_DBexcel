@@ -14,11 +14,68 @@
     <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Sour+Gummy:ital,wght@0,100..900;1,100..900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.0/css/all.min.css" rel="stylesheet" />
 
-    <style></style>
+    <style>
+      .modal {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 9999;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+      }
+      
+      .modal-content {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(0.7);
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        width: 90%;
+        max-width: 500px;
+        max-height: 90vh;
+        overflow-y: auto;
+        opacity: 0;
+        transition: all 0.3s ease;
+      }
+      
+      .modal.show {
+        display: block;
+        opacity: 1;
+        visibility: visible;
+      }
+      
+      .modal.show .modal-content {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+      }
+      
+      .close {
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        font-size: 24px;
+        cursor: pointer;
+        transition: color 0.3s ease;
+      }
+      
+      .close:hover {
+        color: #ff0000;
+      }
+    </style>
 
     <title>Kriteria</title>
   </head>
   <body>
+    <div id="myModal" class="modal hidden">
+      <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <div id="modalContent"></div>
+      </div>
+    </div>
     <div class="flex flex-row h-screen">
       <div class="flex flex-col bg-Abu585D61 p-5 w-1/4 space-y-4 font-semibold text-white font-roboto">
         <div class="font-sour font-bold w-fit bg-Biru63D1F6 p-3 rounded-tl-3xl rounded-ee-3xl shadow-md mb-3">
@@ -32,14 +89,14 @@
         <a href="/alternatif"><i class="fa-solid fa-signal text-Biru63D1F6 text-xl mr-4"></i>Tabel Alternatif</a>
         <a href="/saw"><i class="fa-solid fa-ranking-star text-Biru63D1F6 text-xl mr-4"></i>Perhitungan SAW</a>
         <a href="/user"><i class="fa-solid fa-users text-Biru63D1F6 text-xl mr-4"></i>Tabel User</a>
-        <a href=""><i class="fa-solid fa-right-from-bracket text-Biru63D1F6 text-xl mr-5"></i>Logout</a>
+        <a href="/logout"><i class="fa-solid fa-right-from-bracket text-Biru63D1F6 text-xl mr-5"></i>Logout</a>
       </div>
       <div class="w-full p-5 bg-PutihFCF6F5">
         <div class="flex justify-between mb-2">
           <p class="text-lg font-ubuntu font-semibold text-Biru63D1F6">Rekomendasi Operator di Gang Buntu</p>
           <div>
             <p>
-              <i class="fa-solid fa-user text-lg mr-1"></i> Retno Cantik
+              <i class="fa-solid fa-user text-lg mr-1"></i> {{ username }}
             </p>
           </div>
         </div>
@@ -47,7 +104,7 @@
         <div class="mt-10 bg-white py-4 px-4 shadow-2xl">
           <div class="flex justify-between mb-2">
             <p class="text-lg text-KuningDEAF4B font-semibold">Tabel Kriteria</p>
-            <a href="/tambah" class="bg-KuningDEAF4B py-1 px-4 rounded-xl text-white font-bold"><i class="fa-solid fa-plus text-lg mr-1"></i>Tambah Kriteria</a>
+            <a href="javascript:void(0);" onclick="openModal()" class="bg-KuningDEAF4B py-1 px-4 rounded-xl text-white font-bold"><i class="fa-solid fa-plus text-lg mr-1"></i>Tambah Kriteria</a>
           </div>
           <hr />
           <div class="">
@@ -78,6 +135,51 @@
         </div>
       </div>
     </div>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        function openModal() {
+          const modal = document.getElementById('myModal')
+      
+          modal.style.display = 'block'
+          modal.offsetHeight
+      
+          modal.classList.add('show')
+          document.body.style.overflow = 'hidden'
+        }
+      
+        function closeModal() {
+          const modal = document.getElementById('myModal')
+          modal.classList.remove('show')
+      
+          setTimeout(() => {
+            modal.style.display = 'none'
+            document.body.style.overflow = ''
+          }, 500)
+        }
+      
+        document.querySelector('[onclick="openModal()"]').addEventListener('click', (e) => {
+          e.preventDefault()
+      
+          fetch('/tambah')
+            .then((response) => response.text())
+            .then((data) => {
+              document.getElementById('modalContent').innerHTML = data
+              openModal()
+            })
+            .catch((error) => console.error('Error:', error))
+        })
+      
+        document.querySelector('.close').addEventListener('click', closeModal)
+      
+        window.addEventListener('click', (event) => {
+          const modal = document.getElementById('myModal')
+          if (event.target === modal) {
+            closeModal()
+          }
+        })
+      })
+    </script>
     <script>
       $(document).ready(function () {
         $('#table').DataTable({
