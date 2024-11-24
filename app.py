@@ -73,16 +73,14 @@ def index():
     data = df.to_dict(orient="records")
     return render_template("kriteria/index.jinja", username=username, data=data)
 
-@app.route("/tambah", methods=['GET', 'POST'])
+@app.route("/tambah", methods=['POST'])
 def tambah():
-    if request.method == 'POST':
-        kriteria = request.form["kriteria"]
-        jenis_kriteria = request.form["jenis_kriteria"]
-        df = read_kriteria()
-        df = df._append({"kriteria" : kriteria, "jenis_kriteria":jenis_kriteria}, ignore_index=True)
-        save_kriteria(df)
-        return redirect(url_for("index"))
-    return render_template("kriteria/tambah.jinja")
+    kriteria = request.form["kriteria"]
+    jenis_kriteria = request.form["jenis_kriteria"]
+    df = read_kriteria()
+    df = df._append({"kriteria" : kriteria, "jenis_kriteria":jenis_kriteria}, ignore_index=True)
+    save_kriteria(df)
+    return jsonify(success=True, message="Berhasil Menambahkan Kriteria Baru")
 
 @app.route("/edit/<int:id>", methods=['GET', 'POST'])
 def edit(id):
@@ -193,7 +191,6 @@ def swara():
         
     hapus_data = data_swara - data_kriteria
     swara_df = swara_df[~swara_df['kriteria'].isin(hapus_data)]
-    
     
     for idx, row in swara_df.iterrows():
         kriteria_name = row['kriteria']
