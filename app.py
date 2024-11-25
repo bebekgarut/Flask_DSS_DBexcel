@@ -113,6 +113,7 @@ def hapus(kode_kriteria):
 
 @app.route("/ahli", methods=['GET', 'POST'])
 def ahli():
+    username = session.get('username')
     kriteria_df = read_kriteria()
     ahli_df = read_ahli()
     
@@ -135,7 +136,7 @@ def ahli():
     data = ahli_df.to_dict(orient="records")
     headers = ahli_df.columns.tolist()
     
-    return render_template("ahli/index.jinja", data=data, headers=headers)
+    return render_template("ahli/index.jinja", username=username, data=data, headers=headers)
 
 @app.route("/ahli/tambah", methods=['POST'])
 def tambah_ahli():
@@ -163,13 +164,13 @@ def edit_ahli(kode_ahli):
         
     return jsonify(success=True, message="Berhasil Mengubah Data Pendapat Ahli")
 
-@app.route("/ahli/hapus/<string:kode_ahli>")
+@app.route("/ahli/hapus/<string:kode_ahli>", methods=['POST'])
 def hapus_ahli(kode_ahli):
     ahli_df = read_ahli()
     drop_ahli = ahli_df[ahli_df['kode_ahli'] == kode_ahli].index
     ahli_df.drop(drop_ahli, inplace=True)
     save_ahli(ahli_df)
-    return redirect(url_for('ahli'))
+    return jsonify(success=True, message="Data berhasil dihapus")
 
 @app.route("/swara")
 def swara():
@@ -223,16 +224,18 @@ def swara():
     
     data = swara_df.to_dict(orient="records")
     
-    return render_template("swara/index.jinja", data=data)
+    return render_template("swara/index.jinja",username=username, data=data)
 
 @app.route('/bobot')
 def bobot():
+    username = session.get('username')
     swara_df = read_swara()
     data_swara = swara_df.to_dict(orient="records")
-    return render_template("/bobot/index.jinja", data=data_swara)
+    return render_template("/bobot/index.jinja", data=data_swara, username=username)
 
 @app.route('/alternatif')
 def alternatif():
+    username = session.get('username')
     kriteria_df = read_kriteria()
     alternatif_df = read_alternatif()
     
@@ -255,7 +258,7 @@ def alternatif():
     data = alternatif_df.to_dict(orient="records")
     headers = alternatif_df.columns.tolist()
     
-    return render_template("alternatif/index.jinja", data=data, headers=headers)
+    return render_template("alternatif/index.jinja", username=username, data=data, headers=headers)
 
 @app.route("/alternatif/tambah", methods=['POST'])
 def tambah_alternatif():
@@ -284,16 +287,17 @@ def edit_alternatif(kode_alternatif):
         
     return jsonify(success=True, message="Berhasil Mengubah Data Alternatif")
 
-@app.route("/alternatif/hapus/<string:kode_alternatif>")
+@app.route("/alternatif/hapus/<string:kode_alternatif>", methods=['POST'])
 def hapus_alternatif(kode_alternatif):
     alternatif_df = read_alternatif()
     drop_alternatif = alternatif_df[alternatif_df['kode_alternatif'] == kode_alternatif].index
     alternatif_df.drop(drop_alternatif, inplace=True)
     save_alternatif(alternatif_df)
-    return redirect(url_for('alternatif'))
+    return jsonify(success=True, message="Data berhasil dihapus")
 
 @app.route("/saw")
 def saw():
+    username = session.get('username')
     kriteria_df = read_kriteria()
     swara_df = read_swara()
     alternatif_df = read_alternatif()
@@ -326,7 +330,7 @@ def saw():
     
     headers = saw_df.columns.tolist()
     
-    return render_template("saw/index.jinja", data=data, headers_r=headers_r, headers_v=headers_v, headers_all=headers_all)
+    return render_template("saw/index.jinja", username=username, data=data, headers_r=headers_r, headers_v=headers_v, headers_all=headers_all)
 
 @app.route("/user")
 def user():
@@ -358,6 +362,13 @@ def edit_user(id):
    
     save_user(df)
     return jsonify(success=True, message="Berhasil Mengubah Data User")
+
+@app.route("/user/hapus/<int:id>", methods=['POST'])
+def hapus_user(id):
+    user_df = read_user()
+    df = user_df.drop(id)
+    save_user(df)
+    return jsonify(success=True, message="Data berhasil dihapus")
 
 @app.route("/", methods=['GET', 'POST'])
 def login():

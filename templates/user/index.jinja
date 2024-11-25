@@ -68,7 +68,7 @@
                     <td>{{ row.password }}</td>
                     <td>
                       <button onclick="openModalEdit()" class="edit-button-user" data-id="{{ loop.index0 }}" data-email="{{ row.email }}" data-username="{{ row.username }}" data-password="{{ row.password }}" data-toggle="modal" data-target="#editModal"><i class="fas fa-edit"></i></button>
-                      <button onclick="konfirmasiHapus('{{ url_for('hapus', kode_kriteria=row.kode_kriteria) }}')"><i class="fas fa-trash-alt"></i></button>
+                      <button onclick="konfirmasiHapus('{{ url_for('hapus_user', id=loop.index0) }}')"><i class="fas fa-trash-alt"></i></button>
                     </td>
                   </tr>
                 {% endfor %}

@@ -67,7 +67,7 @@
                       {% endfor %}
                       <td>
                         <button onclick="openModalEdit()" class="edit-button-ahli" data-kode="{{ row.kode_ahli }}" data-toggle="modal" data-target="#editModal"><i class="fas fa-edit"></i></button>
-                        <button onclick="konfirmasiHapus('{{ url_for('hapus', kode_kriteria=row.kode_kriteria) }}')"><i class="fas fa-trash-alt"></i></button>
+                        <button onclick="konfirmasiHapus('{{ url_for('hapus_ahli', kode_ahli=row.kode_ahli) }}')"><i class="fas fa-trash-alt"></i></button>
                       </td>
                     </tr>
                   {% endfor %}

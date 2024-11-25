@@ -17,7 +17,7 @@
   </head>
   <body>
     <div class="flex">
-      <div id="sidebar" class="flex flex-col h-auto space-y-4 font-semibold text-white font-roboto bg-Abu585D61 p-5 pt-8 w-1/5 duration-300 relative">
+      <div id="sidebar" class="flex flex-col h-screen space-y-4 font-semibold text-white font-roboto bg-Abu585D61 p-5 pt-8 w-1/5 duration-300 relative">
         <button id="toggleBtn" class="bg-PutihFCF6F5 text-Abu585D61 text-lg rounded-full absolute right-4 top-2 border border-Abu585D61 cursor-pointer p-1 duration-300"><i class="fas fa-arrow-left" id="toggleIcon"></i></button>
         <div id="logoContainer" class="font-sour font-bold w-fit bg-Biru63D1F6 p-3 rounded-tl-3xl rounded-ee-3xl shadow-md mb-3 duration-300">
           <p class="duration-300">SWARA & SAW</p>
@@ -67,7 +67,7 @@
                       {% endfor %}
                       <td>
                         <button onclick="openModalEdit()" class="edit-button-alternatif" data-kode="{{ row.kode_alternatif }}" data-toggle="modal" data-target="#editModal"><i class="fas fa-edit"></i></button>
-                        <button onclick="konfirmasiHapus('{{ url_for('hapus', kode_kriteria=row.kode_kriteria) }}')"><i class="fas fa-trash-alt"></i></button>
+                        <button onclick="konfirmasiHapus('{{ url_for('hapus_alternatif', kode_alternatif=row.kode_alternatif) }}')"><i class="fas fa-trash-alt"></i></button>
                       </td>
                     </tr>
                   {% endfor %}
