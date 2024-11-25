@@ -139,24 +139,20 @@ def ahli():
     
     return render_template("ahli/index.jinja", data=data, headers=headers)
 
-@app.route("/ahli/tambah", methods=['GET', 'POST'])
+@app.route("/ahli/tambah", methods=['POST'])
 def tambah_ahli():
     ahli_df = read_ahli()
     headers = ahli_df.columns.tolist()
-    
-    if request.method == "POST":
-        new_row = {col : request.form.get(col) for col in headers if col != 'kode_ahli'}
+    new_row = {col : request.form.get(col) for col in headers if col != 'kode_ahli'}
         
-        new_row['kode_ahli'] =generate_kode_ahli(ahli_df)
+    new_row['kode_ahli'] =generate_kode_ahli(ahli_df)
         
-        ahli_df = ahli_df._append(new_row, ignore_index=True)
+    ahli_df = ahli_df._append(new_row, ignore_index=True)
         
-        save_ahli(ahli_df)
+    save_ahli(ahli_df)
         
-        return redirect(url_for('ahli'))
+    return jsonify(success=True, message="Berhasil Menambahkan Pendapat Ahli Baru")
         
-    return render_template("ahli/tambah.jinja", headers=headers)
-
 @app.route("/ahli/edit/<string:kode_ahli>", methods=['GET' , 'POST'])
 def edit_ahli(kode_ahli):
     ahli_df = read_ahli()
@@ -267,24 +263,21 @@ def alternatif():
     
     return render_template("alternatif/index.jinja", data=data, headers=headers)
 
-@app.route("/alternatif/tambah", methods=['GET', 'POST'])
+@app.route("/alternatif/tambah", methods=['POST'])
 def tambah_alternatif():
     alternatif_df = read_alternatif()
     headers = alternatif_df.columns.tolist()
     
-    if request.method == "POST":
-        new_row = {col : request.form.get(col) for col in headers if col != 'kode_alternatif'}
+    new_row = {col : request.form.get(col) for col in headers if col != 'kode_alternatif'}
         
-        new_row['kode_alternatif'] =generate_kode_alternatif(alternatif_df)
+    new_row['kode_alternatif'] =generate_kode_alternatif(alternatif_df)
         
-        alternatif_df = alternatif_df._append(new_row, ignore_index=True)
+    alternatif_df = alternatif_df._append(new_row, ignore_index=True)
         
-        save_alternatif(alternatif_df)
+    save_alternatif(alternatif_df)
         
-        return redirect(url_for('alternatif'))
+    return jsonify(success=True, message="Berhasil Menambahkan Alternatif Baru")
         
-    return render_template("alternatif/tambah.jinja", headers=headers)
-
 @app.route("/alternatif/edit/<string:kode_alternatif>", methods=['GET' , 'POST'])
 def edit_alternatif(kode_alternatif):
     alternatif_df = read_alternatif()
@@ -351,6 +344,16 @@ def user():
     df = read_user()
     data = df.to_dict(orient="records")
     return render_template("user/index.jinja", username=username, data=data)
+
+@app.route("/user/tambah", methods=['POST'])
+def tambah_user():
+    email = request.form["email"]
+    username = request.form["username"]
+    password = request.form["password"]
+    df = read_user()
+    df = df._append({"email":email, "username" : username, "password":password}, ignore_index=True)
+    save_user(df)
+    return jsonify(success=True, message="Berhasil Menambahkan User Baru")
 
 @app.route("/", methods=['GET', 'POST'])
 def login():

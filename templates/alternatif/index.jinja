@@ -17,7 +17,7 @@
   </head>
   <body>
     <div class="flex">
-      <div id="sidebar" class="flex flex-col h-screen space-y-4 font-semibold text-white font-roboto bg-Abu585D61 p-5 pt-8 w-1/5 duration-300 relative">
+      <div id="sidebar" class="flex flex-col h-auto space-y-4 font-semibold text-white font-roboto bg-Abu585D61 p-5 pt-8 w-1/5 duration-300 relative">
         <button id="toggleBtn" class="bg-PutihFCF6F5 text-Abu585D61 text-lg rounded-full absolute right-4 top-2 border border-Abu585D61 cursor-pointer p-1 duration-300"><i class="fas fa-arrow-left" id="toggleIcon"></i></button>
         <div id="logoContainer" class="font-sour font-bold w-fit bg-Biru63D1F6 p-3 rounded-tl-3xl rounded-ee-3xl shadow-md mb-3 duration-300">
           <p class="duration-300">SWARA & SAW</p>
@@ -97,7 +97,7 @@
                   {% else %}
                     <div class="flex flex-col mb-3">
                       <label for="{{ col }}" class="mb-1 ml-2">{{ col }}</label>
-                      <input type="number" step="any" name="{{ col }}" class="border-2 border-Biru63D1F6 rounded-2xl px-2 py-1" placeholder="Masukan Nama {{ col }}" />
+                      <input type="number" step="any" name="{{ col }}" class="border-2 border-Biru63D1F6 rounded-2xl px-2 py-1" placeholder="Masukan Nilai {{ col }}" />
                     </div>
                   {% endif %}
                 {% endif %}

@@ -67,3 +67,115 @@ $('#tambahKriteria').on('submit', function (event) {
       }
     })
   })
+
+  $('#tambahAhli').on('submit', function (event) {
+    event.preventDefault()
+  
+    $.ajax({
+      url: 'ahli/tambah',
+      type: 'POST',
+      data: $('#tambahAhli').serialize(),
+      success: function (response) {
+        if (response.success) {
+          Swal.fire({
+            title: response.message,
+            icon: 'success',
+            confirmButtonText: 'OK'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              location.reload()
+            }
+          })
+          closeModal()
+        } else {
+          Swal.fire({
+            title: 'Gagal Menambahkan Data',
+            icon: 'error',
+            confirmButtonText: 'OK'
+          })
+        }
+      },
+      error: function () {
+        Swal.fire({
+          title: 'Terjadi Kesalahan',
+          icon: 'error',
+          confirmButtonText: 'OK'
+        })
+      }
+    })
+  })
+
+  $('#tambahAlternatif').on('submit', function (event) {
+    event.preventDefault()
+  
+    $.ajax({
+      url: 'alternatif/tambah',
+      type: 'POST',
+      data: $('#tambahAlternatif').serialize(),
+      success: function (response) {
+        if (response.success) {
+          Swal.fire({
+            title: response.message,
+            icon: 'success',
+            confirmButtonText: 'OK'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              location.reload()
+            }
+          })
+          closeModal()
+        } else {
+          Swal.fire({
+            title: 'Gagal Menambahkan Data',
+            icon: 'error',
+            confirmButtonText: 'OK'
+          })
+        }
+      },
+      error: function () {
+        Swal.fire({
+          title: 'Terjadi Kesalahan',
+          icon: 'error',
+          confirmButtonText: 'OK'
+        })
+      }
+    })
+  })
+
+
+  $('#tambahUser').on('submit', function (event) {
+    event.preventDefault()
+  
+    $.ajax({
+      url: 'user/tambah',
+      type: 'POST',
+      data: $('#tambahUser').serialize(),
+      success: function (response) {
+        if (response.success) {
+          Swal.fire({
+            title: response.message,
+            icon: 'success',
+            confirmButtonText: 'OK'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              location.reload()
+            }
+          })
+          closeModal()
+        } else {
+          Swal.fire({
+            title: 'Gagal Menambahkan Data',
+            icon: 'error',
+            confirmButtonText: 'OK'
+          })
+        }
+      },
+      error: function () {
+        Swal.fire({
+          title: 'Terjadi Kesalahan',
+          icon: 'error',
+          confirmButtonText: 'OK'
+        })
+      }
+    })
+  })
