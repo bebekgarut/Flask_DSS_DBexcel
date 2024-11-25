@@ -8,17 +8,7 @@
   <body>
     <p>tambah alternatif</p>
     <form method="POST">
-      {% for col in headers %}
-        {% if col != 'kode_alternatif' %}
-          {% if col == 'alternatif' %}
-            <label for="{{ col }}">{{ col }}</label>
-            <input type="text" name="{{ col }}" />
-          {% else %}
-            <label for="{{ col }}">{{ col }}</label>
-            <input type="number" step="any" name="{{ col }}" />
-          {% endif %}
-        {% endif %}
-      {% endfor %}
+     
       <button type="submit">tambah</button>
     </form>
   </body>
