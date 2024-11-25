@@ -93,14 +93,13 @@ def tambah():
     save_kriteria(df)
     return jsonify(success=True, message="Berhasil Menambahkan Kriteria Baru")
 
-@app.route("/edit/<string:kode_kriteria>", methods=['GET', 'POST'])
+@app.route("/edit/<string:kode_kriteria>", methods=['POST'])
 def edit(kode_kriteria):
     df = read_kriteria()
     kriteria = request.form["kriteria"]
     jenis_kriteria = request.form["jenis_kriteria"]
     df.loc[df["kode_kriteria"] == kode_kriteria, "kriteria"] = kriteria
     df.loc[df["kode_kriteria"] == kode_kriteria, "jenis_kriteria"] = jenis_kriteria
-    save_kriteria(df)
     save_kriteria(df)
     return jsonify(success=True, message="Berhasil Mengubah Kriteria")
 
@@ -153,21 +152,18 @@ def tambah_ahli():
         
     return jsonify(success=True, message="Berhasil Menambahkan Pendapat Ahli Baru")
         
-@app.route("/ahli/edit/<string:kode_ahli>", methods=['GET' , 'POST'])
+@app.route("/ahli/edit/<string:kode_ahli>", methods=['POST'])
 def edit_ahli(kode_ahli):
     ahli_df = read_ahli()
     ahli_data = ahli_df[ahli_df['kode_ahli']==kode_ahli].iloc[0]
     headers = ahli_df.columns.tolist()
     
-    if request.method == "POST":
-        for col in headers:
-            if col != 'kode_ahli':
-                ahli_df.loc[ahli_df['kode_ahli'] == kode_ahli, col] = request.form.get(col)
-        save_ahli(ahli_df)
+    for col in headers:
+        if col != 'kode_ahli':
+            ahli_df.loc[ahli_df['kode_ahli'] == kode_ahli, col] = request.form.get(col)
+    save_ahli(ahli_df)
         
-        return redirect(url_for('ahli'))
-    
-    return render_template("ahli/edit.jinja", data=ahli_data, headers=headers)
+    return jsonify(success=True, message="Berhasil Mengubah Data Pendapat Ahli")
 
 @app.route("/ahli/hapus/<string:kode_ahli>")
 def hapus_ahli(kode_ahli):
@@ -354,6 +350,20 @@ def tambah_user():
     df = df._append({"email":email, "username" : username, "password":password}, ignore_index=True)
     save_user(df)
     return jsonify(success=True, message="Berhasil Menambahkan User Baru")
+
+@app.route("/user/edit/<int:id>", methods=['POST'])
+def edit_user(id):
+    df = read_user()
+    email = request.form["email"]
+    username = request.form["username"]
+    password = request.form["password"]
+    
+    df.loc[id, "email"] = email
+    df.loc[id, "username"] = username
+    df.loc[id, "password"] = password
+   
+    save_user(df)
+    return jsonify(success=True, message="Berhasil Mengubah Data User")
 
 @app.route("/", methods=['GET', 'POST'])
 def login():

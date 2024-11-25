@@ -13,7 +13,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Lilita+One&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Sour+Gummy:ital,wght@0,100..900;1,100..900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.0/css/all.min.css" rel="stylesheet" />
-    <title>Kriteria</title>
+    <title>Ahli</title>
   </head>
   <body>
     <div class="flex">
@@ -66,7 +66,7 @@
                         <td>{{ value }}</td>
                       {% endfor %}
                       <td>
-                        <button onclick="openModalEdit()" class="edit-button" data-kode="{{ row.kode_kriteria }}" data-kriteria="{{ row.kriteria }}" data-jenis="{{ row.jenis_kriteria }}" data-toggle="modal" data-target="#editModal"><i class="fas fa-edit"></i></button>
+                        <button onclick="openModalEdit()" class="edit-button-ahli" data-kode="{{ row.kode_ahli }}" data-toggle="modal" data-target="#editModal"><i class="fas fa-edit"></i></button>
                         <button onclick="konfirmasiHapus('{{ url_for('hapus', kode_kriteria=row.kode_kriteria) }}')"><i class="fas fa-trash-alt"></i></button>
                       </td>
                     </tr>
@@ -103,23 +103,20 @@
       <div id="modalEdit" class="fixed w-full h-full inset-0 bg-black bg-opacity-50 items-center justify-center hidden transition-all duration-300 ease-in-out">
         <div class="bg-white p-8 rounded-xl shadow-xl w-1/3 relative transform transition-all duration-300 ease-in-out opacity-0 scale-95" id="modalContentEdit">
           <button class="text-2xl text-gray-500 absolute top-2 right-2" onclick="closeModalEdit()">&times;</button>
-          <p class="text-xl font-bold mb-4">Edit Data kriteria</p>
-          <form method="POST" id="editKriteria">
+          <p class="text-xl font-bold mb-4">Edit Data Ahli</p>
+          <form method="POST" id="editAhli">
             <div class="flex flex-col">
-              <div class="flex flex-col mb-3">
-                <input type="hidden" name="kode_kriteria" id="kodeKriteria" />
-                <label for="kriteria" class="mb-1 ml-2">Kriteria</label>
-                <input type="text" name="kriteria" class="border-2 border-Biru63D1F6 rounded-2xl px-2 py-1" placeholder="Masukan Nama Kriteria" id="kriteria" />
-              </div>
-              <div class="flex flex-col mb-5">
-                <label for="jenis_kriteria" class="mb-1 ml-2">Jenis Kriteria</label>
-                <select name="jenis_kriteria" id="jenisKriteria" class="border-2 border-Biru63D1F6 rounded-2xl px-2 py-1 mb-3">
-                  <option disabled selected hidden value="">Pilih Jenis Kriteria</option>
-                  <option value="benefit">Benefit</option>
-                  <option value="cost">Cost</option>
-                </select>
-              </div>
-              <button type="submit" class="px-4 py-2 rounded-xl bg-Biru63D1F6 text-PutihFCF6F5 font-bold">Tambah</button>
+              {% for col in headers %}
+                {% if col != 'kode_ahli' %}
+                  <div class="flex flex-col mb-3">
+                    <label for="{{ col }}" class="mb-1 ml-2">{{ col }}</label>
+                    <input type="number" step="any" name="{{ col }}" id="input_{{ col }}" class="border-2 border-Biru63D1F6 rounded-2xl px-2 py-1" placeholder="Masukan Nilai {{ col }}" />
+                  </div>
+                {% else %}
+                  <input type="hidden" name="{{ col }}" id="input_{{ col }}" />
+                {% endif %}
+              {% endfor %}
+              <button type="submit" class="mt-5 px-4 py-2 rounded-xl bg-Biru63D1F6 text-PutihFCF6F5 font-bold">Update</button>
             </div>
           </form>
         </div>
