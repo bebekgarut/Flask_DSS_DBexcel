@@ -3,42 +3,137 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Ahli</title>
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css" />
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Sour+Gummy:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Lilita+One&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Sour+Gummy:ital,wght@0,100..900;1,100..900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.0/css/all.min.css" rel="stylesheet" />
+    <title>Kriteria</title>
   </head>
   <body>
-    <h1>Data Ahli</h1>
-    <a href="/">kriteria</a>
-    <a href="/swara">swara</a>
-    <a href="/ahli/tambah">tambah ahli</a>
-
-    <table border="1">
-      <thead>
-        <tr>
-          {% for col in headers %}
-            <th>{{ col }}</th>
-          {% endfor %}
-          <th>aksi</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% if data %}
-          {% for row in data %}
-            <tr>
-              {% for value in row.values() %}
-                <td>{{ value }}</td>
-              {% endfor %}
-              <td>
-                <a href="/ahli/edit/{{ row.kode_ahli }}">Edit</a> |
-                <a href="/ahli/hapus/{{ row.kode_ahli }}">Hapus</a>
-              </td>
-            </tr>
-          {% endfor %}
-        {% else %}
-          <tr>
-            <td colspan="{{ headers|length + 1 }}">No data available.</td>
-          </tr>
-        {% endif %}
-      </tbody>
-    </table>
+    <div class="flex">
+      <div id="sidebar" class="flex flex-col h-screen space-y-4 font-semibold text-white font-roboto bg-Abu585D61 p-5 pt-8 w-1/4 duration-300 relative">
+        <button id="toggleBtn" class="bg-PutihFCF6F5 text-Abu585D61 text-lg rounded-full absolute right-4 top-2 border border-Abu585D61 cursor-pointer p-1 duration-300"><i class="fas fa-arrow-left" id="toggleIcon"></i></button>
+        <div id="logoContainer" class="font-sour font-bold w-fit bg-Biru63D1F6 p-3 rounded-tl-3xl rounded-ee-3xl shadow-md mb-3 duration-300">
+          <p class="duration-300">SWARA & SAW</p>
+        </div>
+        <a href=""><i class="fas fa-home text-Biru63D1F6 text-xl mr-4"></i><span class="menu-text">Dashboard</span></a>
+        <a href="/"><i class="fa-solid fa-chart-simple text-Biru63D1F6 text-xl mr-5"></i><span class="menu-text">Tabel Kriteria</span></a>
+        <a href="/ahli"><i class="fa-solid fa-star text-Biru63D1F6 text-xl mr-4"></i><span class="menu-text">Tabel Ahli</span></a>
+        <a href="/swara"><i class="fa-solid fa-calculator text-Biru63D1F6 text-xl ml-1 mr-5"></i><span class="menu-text">Perhitungan Swara</span></a>
+        <a href="/bobot"><i class="fa-solid fa-scale-balanced text-Biru63D1F6 text-xl mr-4"></i><span class="menu-text">Tabel Bobot</span></a>
+        <a href="/alternatif"><i class="fa-solid fa-signal text-Biru63D1F6 text-xl mr-4"></i><span class="menu-text">Tabel Alternatif</span></a>
+        <a href="/saw"><i class="fa-solid fa-ranking-star text-Biru63D1F6 text-xl mr-4"></i><span class="menu-text">Perhitungan SAW</span></a>
+        <a href="/user"><i class="fa-solid fa-users text-Biru63D1F6 text-xl mr-4"></i><span class="menu-text">Tabel User</span></a>
+        <a href="/logout"><i class="fa-solid fa-right-from-bracket text-Biru63D1F6 text-xl mr-5"></i><span class="menu-text">Logout</span></a>
+      </div>
+      <div id="mainContent" class="p-5 bg-PutihFCF6F5 w-full">
+        <div class="flex justify-between mb-2">
+          <p class="text-lg font-ubuntu font-semibold text-Biru63D1F6">Rekomendasi Operator di Gang Buntu</p>
+          <div>
+            <p>
+              <i class="fa-solid fa-user text-lg"></i> {{ username }}
+            </p>
+          </div>
+        </div>
+        <hr />
+        <div class="mt-10 bg-white py-4 px-4 shadow-2xl">
+          <div class="flex justify-between mb-2">
+            <p class="text-lg text-KuningDEAF4B font-semibold">Tabel Ahli</p>
+            <button onclick="openModal()" class="bg-KuningDEAF4B py-1 px-4 rounded-xl text-white font-bold"><i class="fa-solid fa-plus text-lg mr-1"></i>Tambah Ahli</button>
+          </div>
+          <hr />
+          <div class="table-responsive">
+            <table class="text-center bg-KuningDEAF4B rounded-xl shadow-2xl" id="table">
+              <thead class="text-center hover:border-none">
+                <tr>
+                  {% for col in headers %}
+                    <th>{{ col }}</th>
+                  {% endfor %}
+                  <th>aksi</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% if data %}
+                  {% for row in data %}
+                    <tr>
+                      {% for value in row.values() %}
+                        <td>{{ value }}</td>
+                      {% endfor %}
+                      <td>
+                        <button onclick="openModalEdit()" class="edit-button" data-kode="{{ row.kode_kriteria }}" data-kriteria="{{ row.kriteria }}" data-jenis="{{ row.jenis_kriteria }}" data-toggle="modal" data-target="#editModal"><i class="fas fa-edit"></i></button>
+                        <button onclick="konfirmasiHapus('{{ url_for('hapus', kode_kriteria=row.kode_kriteria) }}')"><i class="fas fa-trash-alt"></i></button>
+                      </td>
+                    </tr>
+                  {% endfor %}
+                {% else %}
+                  <tr>
+                    <td colspan="{{ headers|length + 1 }}">No data available.</td>
+                  </tr>
+                {% endif %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div id="modalTambah" class="fixed w-full h-full inset-0 bg-black bg-opacity-50 items-center justify-center hidden transition-all duration-300 ease-in-out">
+        <div class="bg-white p-8 rounded-xl shadow-xl w-1/3 relative transform transition-all duration-300 ease-in-out opacity-0 scale-95" id="modalContentTambah">
+          <button class="text-2xl text-gray-500 absolute top-2 right-2" onclick="closeModal()">&times;</button>
+          <p class="text-xl font-bold mb-4">Tambah Data kriteria</p>
+          <form method="POST" id="tambahKriteria">
+            <div class="flex flex-col">
+              <div class="flex flex-col mb-3">
+                <label for="kriteria" class="mb-1 ml-2">Kriteria</label>
+                <input type="text" name="kriteria" class="border-2 border-Biru63D1F6 rounded-2xl px-2 py-1" placeholder="Masukan Nama Kriteria" />
+              </div>
+              <div class="flex flex-col mb-5">
+                <label for="jenis_kriteria" class="mb-1 ml-2">Jenis Kriteria</label>
+                <select name="jenis_kriteria" id="" class="border-2 border-Biru63D1F6 rounded-2xl px-2 py-1 mb-3">
+                  <option disabled selected hidden value="">Pilih Jenis Kriteria</option>
+                  <option value="benefit">Benefit</option>
+                  <option value="cost">Cost</option>
+                </select>
+              </div>
+              <button type="submit" class="px-4 py-2 rounded-xl bg-Biru63D1F6 text-PutihFCF6F5 font-bold">Tambah</button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div id="modalEdit" class="fixed w-full h-full inset-0 bg-black bg-opacity-50 items-center justify-center hidden transition-all duration-300 ease-in-out">
+        <div class="bg-white p-8 rounded-xl shadow-xl w-1/3 relative transform transition-all duration-300 ease-in-out opacity-0 scale-95" id="modalContentEdit">
+          <button class="text-2xl text-gray-500 absolute top-2 right-2" onclick="closeModalEdit()">&times;</button>
+          <p class="text-xl font-bold mb-4">Edit Data kriteria</p>
+          <form method="POST" id="editKriteria">
+            <div class="flex flex-col">
+              <div class="flex flex-col mb-3">
+                <input type="hidden" name="kode_kriteria" id="kodeKriteria" />
+                <label for="kriteria" class="mb-1 ml-2">Kriteria</label>
+                <input type="text" name="kriteria" class="border-2 border-Biru63D1F6 rounded-2xl px-2 py-1" placeholder="Masukan Nama Kriteria" id="kriteria" />
+              </div>
+              <div class="flex flex-col mb-5">
+                <label for="jenis_kriteria" class="mb-1 ml-2">Jenis Kriteria</label>
+                <select name="jenis_kriteria" id="jenisKriteria" class="border-2 border-Biru63D1F6 rounded-2xl px-2 py-1 mb-3">
+                  <option disabled selected hidden value="">Pilih Jenis Kriteria</option>
+                  <option value="benefit">Benefit</option>
+                  <option value="cost">Cost</option>
+                </select>
+              </div>
+              <button type="submit" class="px-4 py-2 rounded-xl bg-Biru63D1F6 text-PutihFCF6F5 font-bold">Tambah</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="{{ url_for('static', filename='js/tambah.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/table.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/sidebar.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/edit.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/hapus.js') }}"></script>
   </body>
 </html>

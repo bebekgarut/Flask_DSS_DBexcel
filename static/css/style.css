@@ -616,6 +616,26 @@ video {
   inset: 0px;
 }
 
+.-right-1 {
+  right: -0.25rem;
+}
+
+.-right-2 {
+  right: -0.5rem;
+}
+
+.-right-3 {
+  right: -0.75rem;
+}
+
+.-right-4 {
+  right: -1rem;
+}
+
+.-right-5 {
+  right: -1.25rem;
+}
+
 .left-0 {
   left: 0px;
 }
@@ -626,6 +646,10 @@ video {
 
 .left-2 {
   left: 0.5rem;
+}
+
+.left-20 {
+  left: 5rem;
 }
 
 .left-3 {
@@ -644,12 +668,24 @@ video {
   right: 0.25rem;
 }
 
+.right-10 {
+  right: 2.5rem;
+}
+
 .right-2 {
   right: 0.5rem;
 }
 
 .right-3 {
   right: 0.75rem;
+}
+
+.right-4 {
+  right: 1rem;
+}
+
+.right-8 {
+  right: 2rem;
 }
 
 .top-0 {
@@ -664,44 +700,8 @@ video {
   top: 1rem;
 }
 
-.left-20 {
-  left: 5rem;
-}
-
 .top-9 {
   top: 2.25rem;
-}
-
-.right-10 {
-  right: 2.5rem;
-}
-
-.-right-1 {
-  right: -0.25rem;
-}
-
-.-right-5 {
-  right: -1.25rem;
-}
-
-.-right-4 {
-  right: -1rem;
-}
-
-.-right-3 {
-  right: -0.75rem;
-}
-
-.-right-2 {
-  right: -0.5rem;
-}
-
-.right-8 {
-  right: 2rem;
-}
-
-.right-4 {
-  right: 1rem;
 }
 
 .m-20 {
@@ -1553,6 +1553,23 @@ th {
 
 td {
   text-align: center !important;
+}
+
+.sidebar-collapsed {
+  width: 4rem !important;
+}
+
+.sidebar-collapsed .menu-text {
+  display: none;
+}
+
+.sidebar-collapsed #logoContainer {
+  font-size: small;
+  padding-left: 7px;
+}
+
+.icon-rotate {
+  transform: rotate(180deg);
 }
 
 .hover\:border-none:hover {

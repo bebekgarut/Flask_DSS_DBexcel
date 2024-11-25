@@ -8,3 +8,20 @@ th {
 td {
   text-align: center !important;
 }
+
+.sidebar-collapsed {
+  width: 4rem !important;
+}
+
+.sidebar-collapsed .menu-text {
+  display: none;
+}
+
+.sidebar-collapsed #logoContainer {
+  font-size: small;
+  padding-left: 7px;
+}
+
+.icon-rotate {
+  transform: rotate(180deg);
+}

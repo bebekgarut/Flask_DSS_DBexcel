@@ -15,6 +15,16 @@ def read_kriteria():
 
 def save_kriteria(df):
     df.to_excel(db_kriteria, index=False)
+    
+def generate_kode_kriteria(df):
+    if df.empty:
+        return "C1"
+    
+    last_code = df["kode_kriteria"].iloc[-1]
+    last_number = int(last_code[1:])
+    new_number = last_number + 1
+    
+    return f"C{new_number}"
 
 def read_ahli():
     return pd.read_excel(db_ahli)
@@ -78,30 +88,29 @@ def tambah():
     kriteria = request.form["kriteria"]
     jenis_kriteria = request.form["jenis_kriteria"]
     df = read_kriteria()
-    df = df._append({"kriteria" : kriteria, "jenis_kriteria":jenis_kriteria}, ignore_index=True)
+    kode_kriteria = generate_kode_kriteria(df)
+    df = df._append({"kode_kriteria":kode_kriteria, "kriteria" : kriteria, "jenis_kriteria":jenis_kriteria}, ignore_index=True)
     save_kriteria(df)
     return jsonify(success=True, message="Berhasil Menambahkan Kriteria Baru")
 
-@app.route("/edit/<int:id>", methods=['GET', 'POST'])
-def edit(id):
+@app.route("/edit/<string:kode_kriteria>", methods=['GET', 'POST'])
+def edit(kode_kriteria):
     df = read_kriteria()
-    data_to_edit = df.loc[id].to_dict() 
-    
-    if request.method == 'POST' :
-        kriteria = request.form["kriteria"]
-        jenis_kriteria = request.form["jenis_kriteria"]
-        df.loc[id, "kriteria"] = kriteria
-        df.loc[id, "jenis_kriteria"] = jenis_kriteria
-        save_kriteria(df)
-        return redirect(url_for("index"))
-    return render_template("kriteria/edit.jinja", data=data_to_edit)
-
-@app.route("/hapus/<int:id>")
-def hapus(id):
-    df = read_kriteria()
-    df = df.drop(id)
+    kriteria = request.form["kriteria"]
+    jenis_kriteria = request.form["jenis_kriteria"]
+    df.loc[df["kode_kriteria"] == kode_kriteria, "kriteria"] = kriteria
+    df.loc[df["kode_kriteria"] == kode_kriteria, "jenis_kriteria"] = jenis_kriteria
     save_kriteria(df)
-    return redirect(url_for("index"))
+    save_kriteria(df)
+    return jsonify(success=True, message="Berhasil Mengubah Kriteria")
+
+@app.route("/hapus/<string:kode_kriteria>", methods=['POST'])
+def hapus(kode_kriteria):
+    df = read_kriteria()
+    drop_kriteria = df[df['kode_kriteria'] == kode_kriteria].index
+    df.drop(drop_kriteria, inplace=True)
+    save_kriteria(df)
+    return jsonify(success=True, message="Data berhasil dihapus")
 
 @app.route("/ahli", methods=['GET', 'POST'])
 def ahli():
@@ -109,7 +118,7 @@ def ahli():
     kriteria_df = read_kriteria()
     ahli_df = read_ahli()
     
-    kriteria_data = kriteria_df.iloc[:, 0].tolist()
+    kriteria_data = kriteria_df.iloc[:, 1].tolist()
     
     ahli_columns = set(ahli_df.columns)
     kriteria_to_ahli = set(kriteria_data)
@@ -179,7 +188,7 @@ def swara():
     swara_df = read_swara()
     ahli_df = read_ahli()
     
-    kriteria_data = kriteria_df.iloc[:, 0].tolist()
+    kriteria_data = kriteria_df.iloc[:, 1].tolist()
     swara_data = swara_df.iloc[:, 0].tolist()
     
     data_kriteria = set(kriteria_data)
