@@ -246,7 +246,7 @@ def alternatif():
     kriteria_df = read_kriteria()
     alternatif_df = read_alternatif()
     
-    kriteria_data = kriteria_df.iloc[:, 0].tolist()
+    kriteria_data = kriteria_df.iloc[:, 1].tolist()
     
     alternatif_columns = set(alternatif_df.columns)
     kriteria_to_alternatif = set(kriteria_data)
@@ -344,6 +344,13 @@ def saw():
     headers = saw_df.columns.tolist()
     
     return render_template("saw/index.jinja", data=data, headers_r=headers_r, headers_v=headers_v, headers_all=headers_all)
+
+@app.route("/user")
+def user():
+    username = session.get('username')
+    df = read_user()
+    data = df.to_dict(orient="records")
+    return render_template("user/index.jinja", username=username, data=data)
 
 @app.route("/", methods=['GET', 'POST'])
 def login():

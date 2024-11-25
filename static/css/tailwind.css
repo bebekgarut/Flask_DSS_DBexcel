@@ -22,6 +22,15 @@ td {
   padding-left: 7px;
 }
 
+.sidebar-collapsed #mainContent {
+  margin-left: 0px;
+  width: 100%;
+}
+
 .icon-rotate {
   transform: rotate(180deg);
+}
+
+#table thead th {
+  width: auto !important; /* Membuat setiap th di thead menyesuaikan lebar */
 }

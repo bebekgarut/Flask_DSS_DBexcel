@@ -773,6 +773,14 @@ video {
   margin-left: 1.25rem;
 }
 
+.ml-60 {
+  margin-left: 15rem;
+}
+
+.ml-72 {
+  margin-left: 18rem;
+}
+
 .mr-1 {
   margin-right: 0.25rem;
 }
@@ -886,6 +894,10 @@ video {
   width: 25%;
 }
 
+.w-1\/5 {
+  width: 20%;
+}
+
 .w-10 {
   width: 2.5rem;
 }
@@ -900,6 +912,10 @@ video {
 
 .w-4 {
   width: 1rem;
+}
+
+.w-4\/5 {
+  width: 80%;
 }
 
 .w-5 {
@@ -929,6 +945,26 @@ video {
 
 .w-full {
   width: 100%;
+}
+
+.max-w-1 {
+  max-width: 0.25rem;
+}
+
+.max-w-96 {
+  max-width: 24rem;
+}
+
+.max-w-full {
+  max-width: 100%;
+}
+
+.max-w-md {
+  max-width: 28rem;
+}
+
+.table-auto {
+  table-layout: auto;
 }
 
 .border-collapse {
@@ -1055,8 +1091,24 @@ video {
   margin-bottom: calc(1.5rem * var(--tw-space-y-reverse));
 }
 
+.overflow-auto {
+  overflow: auto;
+}
+
+.overflow-hidden {
+  overflow: hidden;
+}
+
+.overflow-x-auto {
+  overflow-x: auto;
+}
+
 .rounded-2xl {
   border-radius: 1rem;
+}
+
+.rounded-3xl {
+  border-radius: 1.5rem;
 }
 
 .rounded-full {
@@ -1067,8 +1119,17 @@ video {
   border-radius: 0.5rem;
 }
 
+.rounded-none {
+  border-radius: 0px;
+}
+
 .rounded-xl {
   border-radius: 0.75rem;
+}
+
+.rounded-b-none {
+  border-bottom-right-radius: 0px;
+  border-bottom-left-radius: 0px;
 }
 
 .rounded-e-full {
@@ -1568,8 +1629,18 @@ td {
   padding-left: 7px;
 }
 
+.sidebar-collapsed #mainContent {
+  margin-left: 0px;
+  width: 100%;
+}
+
 .icon-rotate {
   transform: rotate(180deg);
+}
+
+#table thead th {
+  width: auto !important;
+  /* Membuat setiap th di thead menyesuaikan lebar */
 }
 
 .hover\:border-none:hover {

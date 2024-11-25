@@ -13,7 +13,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Lilita+One&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Sour+Gummy:ital,wght@0,100..900;1,100..900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.0/css/all.min.css" rel="stylesheet" />
-    <title>Kriteria</title>
+    <title>User</title>
   </head>
   <body>
     <div class="flex">
@@ -44,38 +44,34 @@
         <hr />
         <div class="mt-10 bg-white py-4 px-4 shadow-2xl">
           <div class="flex justify-between mb-2">
-            <p class="text-lg text-KuningDEAF4B font-semibold">Tabel Ahli</p>
-            <button onclick="openModal()" class="bg-KuningDEAF4B py-1 px-4 rounded-xl text-white font-bold"><i class="fa-solid fa-plus text-lg mr-1"></i>Tambah Ahli</button>
+            <p class="text-lg text-KuningDEAF4B font-semibold">Tabel User</p>
+            <button onclick="openModal()" class="bg-KuningDEAF4B py-1 px-4 rounded-xl text-white font-bold"><i class="fa-solid fa-plus text-lg mr-1"></i>Tambah User</button>
           </div>
           <hr />
           <div class="table-responsive">
             <table class="text-center bg-KuningDEAF4B rounded-xl shadow-2xl" id="table">
               <thead class="text-center hover:border-none">
                 <tr>
-                  {% for col in headers %}
-                    <th>{{ col }}</th>
-                  {% endfor %}
-                  <th>aksi</th>
+                  <th>No</th>
+                  <th>Email</th>
+                  <th>Username</th>
+                  <th>Password</th>
+                  <th>Aksi</th>
                 </tr>
               </thead>
               <tbody>
-                {% if data %}
-                  {% for row in data %}
-                    <tr>
-                      {% for value in row.values() %}
-                        <td>{{ value }}</td>
-                      {% endfor %}
-                      <td>
-                        <button onclick="openModalEdit()" class="edit-button" data-kode="{{ row.kode_kriteria }}" data-kriteria="{{ row.kriteria }}" data-jenis="{{ row.jenis_kriteria }}" data-toggle="modal" data-target="#editModal"><i class="fas fa-edit"></i></button>
-                        <button onclick="konfirmasiHapus('{{ url_for('hapus', kode_kriteria=row.kode_kriteria) }}')"><i class="fas fa-trash-alt"></i></button>
-                      </td>
-                    </tr>
-                  {% endfor %}
-                {% else %}
+                {% for row in data %}
                   <tr>
-                    <td colspan="{{ headers|length + 1 }}">No data available.</td>
+                    <td class="text-center">{{ loop.index0 + 1 }}</td>
+                    <td>{{ row.email }}</td>
+                    <td>{{ row.username }}</td>
+                    <td>{{ row.password }}</td>
+                    <td>
+                      <button onclick="openModalEdit()" class="edit-button" data-kode="{{ row.kode_kriteria }}" data-kriteria="{{ row.kriteria }}" data-jenis="{{ row.jenis_kriteria }}" data-toggle="modal" data-target="#editModal"><i class="fas fa-edit"></i></button>
+                      <button onclick="konfirmasiHapus('{{ url_for('hapus', kode_kriteria=row.kode_kriteria) }}')"><i class="fas fa-trash-alt"></i></button>
+                    </td>
                   </tr>
-                {% endif %}
+                {% endfor %}
               </tbody>
             </table>
           </div>
