@@ -226,6 +226,18 @@ def swara():
     
     return render_template("swara/index.jinja",username=username, data=data)
 
+@app.route("/swara/perhitungan")
+def swara_perhitungan():
+    username = session.get('username')
+    ahli_df = read_ahli()
+    data_ahli = ahli_df.to_dict(orient="records")
+    headers_ahli = ahli_df.columns.tolist()
+    
+    swara_df = read_swara()
+    data_swara = swara_df.to_dict(orient="records")
+    
+    return render_template("swara/perhitungan.jinja", username=username, data_ahli=data_ahli, headers_ahli=headers_ahli, data_swara=data_swara)
+
 @app.route('/bobot')
 def bobot():
     username = session.get('username')
@@ -320,6 +332,7 @@ def saw():
         saw_df[col_name_v] = saw_df[col_name_r] * bobot
     
     saw_df["Skor_SAW"] = saw_df[[col + "(V)" for col in kriteria_df["kriteria"]]].sum(axis=1)
+    saw_df['Rank_SAW'] = saw_df['Skor_SAW'].rank(ascending=False, method='dense').astype(int)
     
     headers_r = [col for col in saw_df.columns if "(R)" in col]
     headers_v = [col for col in saw_df.columns if "(V)" in col]
@@ -330,7 +343,44 @@ def saw():
     
     headers = saw_df.columns.tolist()
     
-    return render_template("saw/index.jinja", username=username, data=data, headers_r=headers_r, headers_v=headers_v, headers_all=headers_all)
+    return render_template("saw/index.jinja", username=username, data=data, headers_r=headers_r, headers_v=headers_v, headers_all=headers_all, headers=headers)
+
+@app.route("/saw/perhitungan")
+def saw_perhitungan():
+    username = session.get('username')
+    kriteria_df = read_kriteria()
+    swara_df = read_swara()
+    alternatif_df = read_alternatif()
+    saw_df = read_saw()
+    
+    saw_df = alternatif_df.drop(columns=["alternatif"]).copy()
+    saw_df = saw_df.rename(columns={col: col + "(R)" for col in saw_df.columns if col != "kode_alternatif"})
+    
+    for kriteria in kriteria_df["kriteria"]:
+        col_name = kriteria + "(R)"
+        if kriteria_df[kriteria_df["kriteria"] == kriteria]["jenis_kriteria"].values[0] == "benefit":
+            saw_df[col_name] = saw_df[col_name] / saw_df[col_name].max()
+        else:
+            saw_df[col_name] = saw_df[col_name].min() / saw_df[col_name]
+            
+    for kriteria in kriteria_df["kriteria"]:
+        col_name_r = kriteria + "(R)"
+        col_name_v = kriteria + "(V)"
+        bobot = swara_df[swara_df["kriteria"] == kriteria]["Wj"].values[0]
+        saw_df[col_name_v] = saw_df[col_name_r] * bobot
+    
+    saw_df["Skor_SAW"] = saw_df[[col + "(V)" for col in kriteria_df["kriteria"]]].sum(axis=1)
+    
+    headers_r = [col for col in saw_df.columns if "(R)" in col]
+    headers_v = [col for col in saw_df.columns if "(V)" in col]
+    headers_all = saw_df.columns.tolist()
+        
+    save_saw(saw_df)
+    data = saw_df.to_dict(orient="records")
+    
+    headers = saw_df.columns.tolist()
+    
+    return render_template("saw/perhitungan.jinja", username=username, data=data, headers_r=headers_r, headers_v=headers_v, headers_all=headers_all)
 
 @app.route("/user")
 def user():
