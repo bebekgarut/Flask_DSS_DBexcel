@@ -45,12 +45,12 @@
         <div class="mt-10 bg-white py-4 px-4 shadow-2xl">
           <div class="flex justify-between mb-2">
             <p class="text-lg text-KuningDEAF4B font-semibold">Tabel SAW</p>
-            <a href="/swara/perhitungan" class="bg-Biru63D1F6 py-1 px-4 rounded-xl text-white font-bold"><i class="fas fa-eye text-lg mr-1"></i>Lihat Perhitungan Swara</a>
+            <a href="/saw/perhitungan" class="bg-Biru63D1F6 py-1 px-4 rounded-xl text-white font-bold"><i class="fas fa-eye text-lg mr-1"></i>Lihat Perhitungan SAW</a>
           </div>
           <hr />
-          <div class="table-responsive overflow-hidden">
-            <table class="text-center bg-KuningDEAF4B rounded-xl shadow-2xl overflow-x-auto" id="tablesaw">
-              <thead class="text-center hover:border-none">
+          <div class="table-responsive">
+            <table class="text-center bg-KuningDEAF4B rounded-xl shadow-2xl" id="table">
+              <thead class="text-center">
                 <tr>
                   {% for col in headers %}
                     <th>{{ col }}</th>
@@ -82,53 +82,3 @@
     <script src="{{ url_for('static', filename='js/table.js') }}"></script>
   </body>
 </html>
-
-<table>
-  <tr></tr>
-</table>
-
-<h2>Table R (Normalisasi)</h2>
-<table border="1">
-  <thead>
-    <tr>
-      <th>Kode Alternatif</th>
-      {% for col in headers_r %}
-        <th>{{ col }}</th>
-      {% endfor %}
-    </tr>
-  </thead>
-  <tbody>
-    {% for row in data %}
-      <tr>
-        <td>{{ row.kode_alternatif }}</td>
-        {% for col in headers_r %}
-          <td>{{ row.get(col) }}</td>
-        {% endfor %}
-      </tr>
-    {% endfor %}
-  </tbody>
-</table>
-
-<h2>Table V (Preferensi)</h2>
-<table border="1">
-  <thead>
-    <tr>
-      <th>Kode Alternatif</th>
-      {% for col in headers_v %}
-        <th>{{ col }}</th>
-      {% endfor %}
-      <th>Skor SAW</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for row in data %}
-      <tr>
-        <td>{{ row.kode_alternatif }}</td>
-        {% for col in headers_v %}
-          <td>{{ row.get(col) }}</td>
-        {% endfor %}
-        <td>{{ row.Skor_SAW }}</td>
-      </tr>
-    {% endfor %}
-  </tbody>
-</table>

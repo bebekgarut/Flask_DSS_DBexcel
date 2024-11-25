@@ -336,14 +336,16 @@ def saw():
     
     headers_r = [col for col in saw_df.columns if "(R)" in col]
     headers_v = [col for col in saw_df.columns if "(V)" in col]
-    headers_all = saw_df.columns.tolist()
         
     save_saw(saw_df)
+    read_saw()
+    selected_columns = ["kode_alternatif", "Skor_SAW", "Rank_SAW"]  
+    saw_df = saw_df[selected_columns]
     data = saw_df.to_dict(orient="records")
     
     headers = saw_df.columns.tolist()
     
-    return render_template("saw/index.jinja", username=username, data=data, headers_r=headers_r, headers_v=headers_v, headers_all=headers_all, headers=headers)
+    return render_template("saw/index.jinja", username=username, data=data, headers_r=headers_r, headers_v=headers_v, headers=headers)
 
 @app.route("/saw/perhitungan")
 def saw_perhitungan():
@@ -370,17 +372,26 @@ def saw_perhitungan():
         saw_df[col_name_v] = saw_df[col_name_r] * bobot
     
     saw_df["Skor_SAW"] = saw_df[[col + "(V)" for col in kriteria_df["kriteria"]]].sum(axis=1)
+    saw_df['Rank_SAW'] = saw_df['Skor_SAW'].rank(ascending=False, method='dense').astype(int)
     
     headers_r = [col for col in saw_df.columns if "(R)" in col]
     headers_v = [col for col in saw_df.columns if "(V)" in col]
-    headers_all = saw_df.columns.tolist()
-        
-    save_saw(saw_df)
+    saw_df = read_saw()
+    
+    data_alternatif = alternatif_df.to_dict(orient="records")
+    headers_alternatif = alternatif_df.columns.tolist()
     data = saw_df.to_dict(orient="records")
     
-    headers = saw_df.columns.tolist()
+    saw_df = saw_df.sort_values(by='Skor_SAW', ascending=False).reset_index(drop=True)
+    selected_columns = ["kode_alternatif", "Skor_SAW", "Rank_SAW"]  
+    saw_df = saw_df[selected_columns]
+    data_rank = saw_df.to_dict(orient="records")
+    headers_rank = saw_df.columns.tolist()
     
-    return render_template("saw/perhitungan.jinja", username=username, data=data, headers_r=headers_r, headers_v=headers_v, headers_all=headers_all)
+    join_df = saw_df.merge(alternatif_df[['kode_alternatif', 'alternatif']], on='kode_alternatif', how='left')
+    top_alternatif = join_df.nlargest(1, 'Skor_SAW').to_dict(orient="records")[0]
+    
+    return render_template("saw/perhitungan.jinja", username=username, data_rank=data_rank, headers_rank=headers_rank, data=data, headers_r=headers_r, headers_v=headers_v, data_alternatif=data_alternatif, headers_alternatif=headers_alternatif, top_alternatif=top_alternatif)
 
 @app.route("/user")
 def user():

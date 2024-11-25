@@ -27,6 +27,11 @@ td {
   width: 100%;
 }
 
+.sidebar-collapsed #mainContentSAW {
+  margin-left: 0px;
+  width: 100% !important;
+}
+
 .icon-rotate {
   transform: rotate(180deg);
 }
