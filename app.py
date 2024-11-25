@@ -113,7 +113,6 @@ def hapus(kode_kriteria):
 
 @app.route("/ahli", methods=['GET', 'POST'])
 def ahli():
-    
     kriteria_df = read_kriteria()
     ahli_df = read_ahli()
     
@@ -155,7 +154,6 @@ def tambah_ahli():
 @app.route("/ahli/edit/<string:kode_ahli>", methods=['POST'])
 def edit_ahli(kode_ahli):
     ahli_df = read_ahli()
-    ahli_data = ahli_df[ahli_df['kode_ahli']==kode_ahli].iloc[0]
     headers = ahli_df.columns.tolist()
     
     for col in headers:
@@ -274,21 +272,17 @@ def tambah_alternatif():
         
     return jsonify(success=True, message="Berhasil Menambahkan Alternatif Baru")
         
-@app.route("/alternatif/edit/<string:kode_alternatif>", methods=['GET' , 'POST'])
+@app.route("/alternatif/edit/<string:kode_alternatif>", methods=['POST'])
 def edit_alternatif(kode_alternatif):
     alternatif_df = read_alternatif()
-    alternatif_data = alternatif_df[alternatif_df['kode_alternatif']==kode_alternatif].iloc[0]
     headers = alternatif_df.columns.tolist()
     
-    if request.method == "POST":
-        for col in headers:
-            if col != 'kode_alternatif':
-                alternatif_df.loc[alternatif_df['kode_alternatif'] == kode_alternatif, col] = request.form.get(col)
-        save_alternatif(alternatif_df)
+    for col in headers:
+        if col != 'kode_alternatif':
+            alternatif_df.loc[alternatif_df['kode_alternatif'] == kode_alternatif, col] = request.form.get(col)
+    save_alternatif(alternatif_df)
         
-        return redirect(url_for('alternatif'))
-    
-    return render_template("alternatif/edit.jinja", data=alternatif_data, headers=headers)
+    return jsonify(success=True, message="Berhasil Mengubah Data Alternatif")
 
 @app.route("/alternatif/hapus/<string:kode_alternatif>")
 def hapus_alternatif(kode_alternatif):

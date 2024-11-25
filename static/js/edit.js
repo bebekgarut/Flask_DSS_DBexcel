@@ -215,11 +215,9 @@ function openModalEdit() {
       const rowData = {};
       
       row.querySelectorAll('td').forEach((cell, index) => {
-        const colName = document.querySelectorAll('th')[index].innerText; // Dapatkan nama kolom dari header
+        const colName = document.querySelectorAll('th')[index].innerText;
         rowData[colName] = cell.innerText;
       });
-      
-      console.log("Data Baris Terpilih:", rowData);
       
       Object.entries(rowData).forEach(([key, value]) => {
         const input = document.getElementById(`input_${key}`);
@@ -228,10 +226,46 @@ function openModalEdit() {
         } else {
           console.log(`Input dengan ID input_${key} tidak ditemukan`);
         }
-      
       });
-      
     });
   });
+
+  $('#editAlternatif').on('submit', function (event) {
+    event.preventDefault()
   
+    const kodeAlternatif = $('#input_kode_alternatif').val()
+  
+    $.ajax({
+      url: `/alternatif/edit/${kodeAlternatif}`,
+      type: 'POST',
+      data: $('#editAlternatif').serialize(),
+      success: function (response) {
+        if (response.success) {
+          Swal.fire({
+            title: response.message,
+            icon: 'success',
+            confirmButtonText: 'OK'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              location.reload()
+            }
+          })
+          closeModalEdit()
+        } else {
+          Swal.fire({
+            title: 'Gagal Mengubah Data',
+            icon: 'error',
+            confirmButtonText: 'OK'
+          })
+        }
+      },
+      error: function () {
+        Swal.fire({
+          title: 'Terjadi Kesalahan',
+          icon: 'error',
+          confirmButtonText: 'OK'
+        })
+      }
+    })
+  })
   

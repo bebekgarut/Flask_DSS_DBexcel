@@ -126,6 +126,8 @@
                       <input type="number" step="any" name="{{ col }}" id="input_{{ col }}" class="border-2 border-Biru63D1F6 rounded-2xl px-2 py-1" value="" placeholder="Masukan Nilai {{ col }}" />
                     </div>
                   {% endif %}
+                {% else %}
+                  <input type="hidden" name="{{ col }}" id="input_{{ col }}" />
                 {% endif %}
               {% endfor %}
               <button type="submit" class="mt-5 px-4 py-2 rounded-xl bg-Biru63D1F6 text-PutihFCF6F5 font-bold">Update</button>
