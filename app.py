@@ -1,5 +1,9 @@
 from flask import Flask, render_template, request, redirect, url_for, jsonify, session
 import pandas as pd
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+import os
 
 app = Flask(__name__)
 app.secret_key = 'testing0909'
@@ -430,6 +434,33 @@ def hapus_user(id):
     df = user_df.drop(id)
     save_user(df)
     return jsonify(success=True, message="Data berhasil dihapus")
+
+@app.route("/dashboard")
+def dashboard():
+    username = session.get('username')
+    user_df = read_user()
+    kriteria_df = read_kriteria()
+    ahli_df = read_ahli()
+    alternatif_df = read_alternatif()
+    saw_df = read_saw()
+    
+    user_count = user_df.shape[0]
+    kriteria_count = kriteria_df.shape[0]
+    ahli_count = ahli_df.shape[0]
+    alternatif_count = alternatif_df.shape[0]
+    
+    fig, ax = plt.subplots()
+    fig.patch.set_facecolor('#DEAF4B')
+    ax.set_facecolor('#DEAF4B')
+    ax.bar(saw_df['kode_alternatif'], saw_df['Skor_SAW'], color='#585D61')
+    ax.set_xlabel('Kode Alternatif')
+    ax.set_ylabel('Skor SAW')
+    ax.set_title('Grafik SAW Alternatif')
+
+    chart_path = os.path.join('static', 'img', 'saw_chart.png')
+    plt.savefig(chart_path)
+    plt.close(fig)
+    return render_template("dashboard/index.jinja", username=username,  user_count=user_count, kriteria_count=kriteria_count, ahli_count=ahli_count,alternatif_count=alternatif_count, chart_path=chart_path)
 
 @app.route("/", methods=['GET', 'POST'])
 def login():

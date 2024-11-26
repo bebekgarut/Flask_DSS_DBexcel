@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/icon.png') }}" />
     <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.0/css/all.min.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Sour+Gummy:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet" />
@@ -131,7 +132,7 @@
         const result = await response.json()
       
         if (result.success) {
-          window.location.href = '/kriteria'
+          window.location.href = '/dashboard'
         } else {
           Swal.fire({
             icon: 'error',

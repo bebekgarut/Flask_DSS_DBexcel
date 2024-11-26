@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/icon.png') }}" />
     <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css" />
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
@@ -22,7 +23,7 @@
         <div id="logoContainer" class="font-sour font-bold w-fit bg-Biru63D1F6 p-3 rounded-tl-3xl rounded-ee-3xl shadow-md mb-3 duration-300">
           <p class="duration-300">SWARA & SAW</p>
         </div>
-        <a href=""><i class="fas fa-home text-Biru63D1F6 text-xl mr-4"></i><span class="menu-text">Dashboard</span></a>
+        <a href="/dashboard"><i class="fas fa-home text-Biru63D1F6 text-xl mr-4"></i><span class="menu-text">Dashboard</span></a>
         <a href="/kriteria"><i class="fa-solid fa-chart-simple text-Biru63D1F6 text-xl mr-5"></i><span class="menu-text">Tabel Kriteria</span></a>
         <a href="/ahli"><i class="fa-solid fa-star text-Biru63D1F6 text-xl mr-4"></i><span class="menu-text">Tabel Ahli</span></a>
         <a href="/swara"><i class="fa-solid fa-calculator text-Biru63D1F6 text-xl ml-1 mr-5"></i><span class="menu-text">Perhitungan Swara</span></a>
